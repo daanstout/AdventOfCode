@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AdventofCode {
     class Program {
@@ -15,7 +19,9 @@ namespace AdventofCode {
             //Day3_Question1();
             //Day3_Question2();
             //Day4_Question1();
-            Day5_Question1();
+            //Day5_Question1();
+            Day6_Question1(435, 71184);
+            Day6_Question1(435, 7118400);
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -38,7 +44,7 @@ namespace AdventofCode {
                     frequency += Convert.ToInt32(s.Substring(1));
             }
 
-            Console.WriteLine($"Answer Q1.1: {+ frequency}\n");
+            Console.WriteLine($"Answer Q1.1: {+frequency}\n");
         }
 
         private static void Day1_Question2() {
@@ -337,6 +343,50 @@ namespace AdventofCode {
 
             Console.WriteLine(tree.GetMeta());
             Console.WriteLine(tree.GetRootMeta());
+        }
+
+        private static void Day6_Question1(int numPlayers, int numMarbles) {
+            int currentMarbleIndex = 0;
+
+            int[] scores = new int[numPlayers];
+
+            for (int i = 0; i < numPlayers; i++)
+                scores[i] = 0;
+
+            List<int> circle = new List<int> {
+                0
+            };
+
+            for (int i = 1; i <= numMarbles; i++) {
+                if (i % 23 == 0) {
+                    currentMarbleIndex = mod(currentMarbleIndex - 7, circle.Count);
+                    scores[mod(i, numPlayers)] += i + circle[currentMarbleIndex];
+                    circle.RemoveAt(currentMarbleIndex);
+                } else {
+                    int insertIndex = mod(currentMarbleIndex + 2, circle.Count);
+                    if (insertIndex == 0) {
+                        circle.Add(i);
+                        currentMarbleIndex = circle.Count - 1;
+                    } else {
+                        circle.Insert(insertIndex, i);
+                        currentMarbleIndex = insertIndex;
+                    }
+                }
+
+                //Console.WriteLine(i);
+            }
+
+            int highest = 0;
+            foreach (int i in scores)
+                if (i > highest)
+                    highest = i;
+
+            Console.WriteLine(highest);
+        }
+
+        private static int mod(int x, int m) {
+            int r = x % m;
+            return r < 0 ? r + m : r;
         }
     }
 }
