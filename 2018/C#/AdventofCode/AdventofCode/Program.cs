@@ -9,21 +9,26 @@ using System.Text.RegularExpressions;
 
 namespace AdventofCode {
     class Program {
-        static readonly string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        //const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
 
         static void Main(string[] args) {
             Console.WriteLine("Advent of Code - Year 2018");
 
-            Day1_Question1();
-            Day1_Question2();
-            Day2_Question1();
-            Day2_Question2();
-            Day3_Question1();
-            Day3_Question2();
-            Day4();
-            Day8();
-            Day9(435, 71184);
-            Day9(435, 7118400);
+            //Day1_Question1();
+            //Day1_Question2();
+            //Day2_Question1();
+            //Day2_Question2();
+            //Day3_Question1();
+            //Day3_Question2();
+            //Day4();
+            Day5_Question1();
+            Day5_Question2();
+            Day6_Question1();
+            StolenDay6();
+            //Day8();
+            //Day9(435, 71184);
+            //Day9(435, 7118400);
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -330,7 +335,370 @@ namespace AdventofCode {
                     mostAsleep = gi;
             }
 
-            Console.WriteLine($"Answer Q4.2: {mostAsleep.guardId * mostAsleep.MostAsleep()} \n");
+            Console.WriteLine($"Answer Q4.2: {mostAsleep.guardId * mostAsleep.MostAsleep()}\n");
+        }
+
+        private static void Day5_Question1() {
+            Console.WriteLine("Day 5 - Question 1:");
+
+            string input = File.ReadAllText($@"{path}Advent of Code Polymers.txt");
+
+            Console.WriteLine($"Answer Q5.1: {ReactPolymer(input)}\n");
+        }
+
+        private static void Day5_Question2() {
+            Console.WriteLine("Day 5 - Question 2:");
+
+            string input = File.ReadAllText($@"{path}Advent of Code Polymers.txt");
+
+            List<int> results = new List<int>();
+
+            for (int i = 'a'; i <= 'z'; i++) {
+                char remove = (char)i;
+
+                string temp = string.Copy(input);
+
+                temp = temp.Replace(remove.ToString(), "");
+                temp = temp.Replace((remove.ToString().ToUpper()), "");
+
+                results.Add(ReactPolymer(temp));
+            }
+
+            int lowest = 0;
+
+            for (int i = 1; i < results.Count; i++)
+                if (results[lowest] > results[i])
+                    lowest = i;
+
+            Console.WriteLine($"Answer Q5.2: Char {(char)('a' + lowest)} - Length: {results[lowest]}");
+        }
+
+        private static int ReactPolymer(string input) {
+            int i = 0;
+
+            while (i < input.Length - 1) {
+                if (i < 0)
+                    i = 0;
+
+                char cur = input[i];
+                char next = input[i + 1];
+
+                if (cur.ToString().ToUpper().Equals(next.ToString().ToUpper())) {
+                    if (cur != next) {
+                        input = input.Remove(i, 2);
+                        i -= 2;
+                    }
+                }
+
+                i++;
+            }
+
+            return input.Length;
+        }
+
+        private static void Day6_Question1() {
+            Console.WriteLine("Day 6 - Question 1:");
+
+            string input = File.ReadAllText(@"C:\Users\daans\Desktop\Advant of Code Coordinates.txt");
+            //string input = $"1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9";
+
+            string[] inputs = input.Split('\n');
+
+            List<Point> points = new List<Point>();
+
+            foreach (string s in inputs) {
+                string[] coords = s.Split(',');
+
+                points.Add(new Point(Convert.ToInt32(coords[0]), Convert.ToInt32(coords[1])));
+            }
+
+            int[] map = new int[160000];
+
+            for (int i = 0; i < 160000; i++)
+                map[i] = -1;
+
+            for (int i = 0; i < 160000; i++) {
+                bool isCoord = false;
+
+                foreach (Point p in points) {
+                    if (i == GetIndex(p)) {
+                        isCoord = true;
+                        break;
+                    }
+                }
+
+                if (isCoord)
+                    continue;
+
+                foreach (Point p in points) {
+                    if (map[i] == -1) {
+                        map[i] = GetIndex(p);
+                        map[GetIndex(p)]--;
+                    }
+
+                    if (GetManhattan(GetPoint(i), p) < GetManhattan(GetPoint(i), GetPoint(map[i]))) {
+                        map[map[i]]++;
+                        map[i] = GetIndex(p);
+                        map[map[i]]--;
+                        continue;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 400; i++) {
+                bool isCoord = false;
+
+                foreach (Point p in points) {
+                    if (i == GetIndex(p)) {
+                        isCoord = true;
+                        break;
+                    }
+                }
+
+                if (isCoord)
+                    continue;
+
+                foreach (Point p in points) {
+                    Point po = GetPoint(map[i]);
+
+                    if (po.X == p.X && po.Y == p.Y) {
+                        points.Remove(p);
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 160000; i += 400) {
+                bool isCoord = false;
+
+                foreach (Point p in points) {
+                    if (i == GetIndex(p)) {
+                        isCoord = true;
+                        break;
+                    }
+                }
+
+                if (isCoord)
+                    continue;
+
+                foreach (Point p in points) {
+                    Point po = GetPoint(map[i]);
+
+                    if (po.X == p.X && po.Y == p.Y) {
+                        points.Remove(p);
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 160000 - 400; i < 16000; i++) {
+                bool isCoord = false;
+
+                foreach (Point p in points) {
+                    if (i == GetIndex(p)) {
+                        isCoord = true;
+                        break;
+                    }
+                }
+
+                if (isCoord)
+                    continue;
+
+                foreach (Point p in points) {
+                    Point po = GetPoint(map[i]);
+
+                    if (po.X == p.X && po.Y == p.Y) {
+                        points.Remove(p);
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 399; i < 160000; i += 400) {
+                bool isCoord = false;
+
+                foreach (Point p in points) {
+                    if (i == GetIndex(p)) {
+                        isCoord = true;
+                        break;
+                    }
+                }
+
+                if (isCoord)
+                    continue;
+
+                foreach (Point p in points) {
+                    Point po = GetPoint(map[i]);
+
+                    if (po.X == p.X && po.Y == p.Y) {
+                        points.Remove(p);
+                        break;
+                    }
+                }
+            }
+
+            Console.WriteLine(points.Count);
+
+            int min = int.MaxValue;
+
+            foreach (Point p in points) {
+                if (map[GetIndex(p)] < min)
+                    min = map[GetIndex(p)];
+
+                Console.WriteLine(map[GetIndex(p)]);
+            }
+
+            Console.WriteLine(min);
+        }
+
+        private static void StolenDay6() {
+            Console.WriteLine("Day 6 - Question 1:");
+
+            string input = File.ReadAllText(@"C:\Users\daans\Desktop\Advant of Code Coordinates.txt");
+            //string input = $"1, 1\n1, 6\n8, 3\n3, 4\n5, 5\n8, 9";
+
+            string[] inputs = input.Split('\n');
+
+            Dictionary<int, Point> points = new Dictionary<int, Point>();
+
+            int maxX = 0;
+            int maxY = 0;
+            int count = 0;
+
+            foreach (string s in inputs) {
+                string[] st = s.Trim().Split(", ");
+                int x = Convert.ToInt32(st[0]);
+                int y = Convert.ToInt32(st[1]);
+                points.Add(count, new Point(x, y));
+                count++;
+                if (x > maxX)
+                    maxX = x;
+
+                if (y > maxY)
+                    maxY = y;
+            }
+
+            int[,] grid = new int[maxX + 1, maxY + 1];
+            Dictionary<int, int> regions = new Dictionary<int, int>();
+
+            for (int x = 0; x < maxX; x++) {
+                for (int y = 0; y < maxY; y++) {
+                    int best = maxX + maxY;
+                    int bestNum = -1;
+
+                    for (int i = 0; i < count; i++) {
+                        Point p = points[i];
+
+                        int dist = Math.Abs(x - p.X) + Math.Abs(y - p.Y);
+                        if (dist < best) {
+                            best = dist;
+                            bestNum = i;
+                        } else if (dist == best) {
+                            bestNum = -1;
+                        }
+                    }
+
+                    grid[x, y] = bestNum;
+                    if (regions.ContainsKey(bestNum)) {
+                        regions[bestNum] += 1;
+                    } else {
+                        regions.Add(bestNum, 1);
+                    }
+                }
+            }
+
+            for (int x = 0; x <= maxX; x++) {
+                int bad = grid[x, 0];
+                regions.Remove(bad);
+                bad = grid[x, maxY];
+                regions.Remove(bad);
+            }
+
+            for (int y = 0; y <= maxY; y++) {
+                int bad = grid[0, y];
+                regions.Remove(bad);
+                bad = grid[maxX, y];
+                regions.Remove(bad);
+            }
+
+            int biggest = 0;
+            foreach (int size in regions.Values)
+                if (size > biggest)
+                    biggest = size;
+
+            Console.WriteLine(biggest);
+
+            int inarea = 0;
+
+            for (int x = 0; x < maxX; x++) {
+                for (int y = 0; y < maxY; y++) {
+                    int size = 0;
+
+                    for (int i = 0; i < count; i++) {
+                        Point p = points[i];
+
+                        int dist = Math.Abs(x - p.X) + Math.Abs(y - p.Y);
+                        size += dist;
+                    }
+
+                    if (size < 10000) {
+                        inarea++;
+                    }
+                }
+            }
+
+            Console.WriteLine(inarea);
+        }
+
+        private static int GetManhattan(Point a, Point b) {
+            return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
+        }
+
+        private static int GetIndex(Point p) {
+            return p.Y * 400 + p.X;
+        }
+
+        private static Point GetPoint(int i) {
+            return new Point(i % 400, i / 400);
+        }
+
+        private static void Day7_Question1() {
+            Console.WriteLine("Day 7 - Question 1:");
+
+            //string input = File.ReadAllText(@"C:\Users\daans\Desktop\Advant of Code Assembly Instructions.txt");
+            string input = $"Step C must be finished before step A can begin.\nStep C must be finished before step F can begin.\nStep A must be finished before step B can begin.\nStep A must be finished before step D can begin.\nStep B must be finished before step E can begin.\nStep D must be finished before step E can begin.\nStep F must be finished before step E can begin.";
+
+            string[] inputs = input.Split('\n');
+
+            Graph graph = new Graph();
+
+            foreach (string s in inputs) {
+                string[] txt = s.Split(' ');
+                string v1 = txt[1];
+                string v2 = txt[7];
+
+                graph.AddEdge(v1, v2, 0);
+            }
+
+            //Console.WriteLine(graph.GetStart());
+            //foreach (Vertex v in graph.GetStart())
+            //    Console.WriteLine(v);
+
+            foreach (Vertex v in graph.GetOrder())
+                //Console.WriteLine(v)
+                Console.Write(v.ToString()[0]);
+            Console.WriteLine();
+
+            int result = graph.Make();
+
+            Console.WriteLine(result);
+
+            //List<Vertex> v = graph.GetOrder();
+            //for (int i = v.Count - 1; i >= 0; i--)
+            //    Console.Write(v[i].ToString()[0]);
+
+
+            //Console.WriteLine(graph);
         }
 
         private static void Day8() {
