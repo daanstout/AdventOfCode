@@ -1,4 +1,5 @@
-path = "C:\\Users\\Daan\\Desktop\\AdventOfCode\\2018\\Input\\"
+#path = "C:\\Users\\Daan\\Desktop\\AdventOfCode\\2018\\Input\\"
+path = "C:\\Users\\daans\\Desktop\\AdventOfCode\\2018\\Input\\"
 
 def Day1_Question1():
 	print("Day 1 - Question 1")
@@ -93,11 +94,27 @@ def Day2_Question1():
         if len(existTwice) >= 1:
             twice += 1
 
-    print("Answer Q2.1: " + str(twice * thrice))
-
+    print("Answer Q2.1: " + str(twice * thrice) + "\n")
+    print("Day 2 - Question 2:")
+    
+    for id in inputs:
+        for check in inputs:
+            differ = False
+            next = False
+            for index in range(0, len(id)):
+                if id[index] != check[index]:
+                    if differ:
+                        next = True
+                        break
+                    else:
+                        differ = True
+            if differ and not next:
+                print("Answer Q2.2: The strings are:\n" + id + "\n" + check + "\n")
+                return
+    return
 
 if(__name__ == "__main__"):
     print("Advent of Code - Year 2018")
-    Day2_Question1()
 	#Day1_Question1()
 	#Day1_Question2()
+    Day2_Question1()
