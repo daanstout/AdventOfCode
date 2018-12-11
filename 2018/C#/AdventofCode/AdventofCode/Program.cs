@@ -22,13 +22,16 @@ namespace AdventofCode {
             //Day3_Question1();
             //Day3_Question2();
             //Day4();
-            Day5_Question1();
-            Day5_Question2();
-            Day6_Question1();
-            StolenDay6();
+            //Day5_Question1();
+            //Day5_Question2();
+            //Day6_Question1();
+            //StolenDay6();
+            //Day7_Question1();
             //Day8();
             //Day9(435, 71184);
             //Day9(435, 7118400);
+            //Day11_Question1();
+            StolenDay11();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -760,6 +763,115 @@ namespace AdventofCode {
         private static int mod(int x, int m) {
             int r = x % m;
             return r < 0 ? r + m : r;
+        }
+
+        private static void Day11_Question1() {
+            Console.WriteLine("Day 11 - Question 1:");
+
+            int input = 2568;
+            //int input = 42;
+
+            //Console.WriteLine(CalculateFuelCellPower(3, 5, 8));
+            //Console.WriteLine(CalculateFuelCellPower(122, 79, 57));
+            //Console.WriteLine(CalculateFuelCellPower(217, 196, 39));
+            //Console.WriteLine(CalculateFuelCellPower(101, 153, 71));
+
+            int[,] cells = new int[301, 301];
+
+            for (int x = 1; x <= 300; x++) {
+                for (int y = 1; y <= 300; y++) {
+                    cells[x, y] = CalculateFuelCellPower(x, y, input);
+                }
+            }
+
+            int heighest = int.MinValue;
+            int xi = 0, yi = 0;
+
+            for (int x = 1; x <= 298; x++) {
+                for (int y = 1; y <= 298; y++) {
+                    int total = 0;
+                    for (int i = 0; i < 3; i++)
+                        for (int j = 0; j < 3; j++)
+                            total += cells[x + i, y + j];
+
+                    if (total >= heighest) {
+                        heighest = total;
+                        xi = x;
+                        yi = y;
+                    }
+                }
+            }
+
+            Console.WriteLine($"Answer Q11.1: {{{xi}, {yi}}} with level: {heighest}\n");
+
+            Console.WriteLine("Day 11 - Question 2:");
+
+            int si = 0;
+            heighest = int.MinValue;
+
+            for (int s = 1; s < 300; s++) {
+                for (int x = 1; x <= 300 - s; x++) {
+                    for (int y = 1; y <= 300 - s; y++) {
+                        int total = 0;
+
+                        for (int i = 0; i < s; i++)
+                            for (int j = 0; j < s; j++)
+                                total += cells[x + i, y + 1];
+
+                        if (total > heighest) {
+                            heighest = total;
+                            xi = x;
+                            yi = y;
+                            si = s;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine($"Answer Q11.2: {{{xi}, {yi}, {si}}} with level: {heighest}\n");
+        }
+
+        private static void StolenDay11() {
+            int[,] sum = new int[301, 301];
+            int bx = 0, by = 0, bs = 0, best = int.MinValue;
+            for (int y = 1; y <= 300; y++) {
+                for (int x = 1; x <= 300; x++) {
+                    int id = x + 10;
+                    int p = id * y + 2568;
+                    p = (p * id) / 100 % 10 - 5;
+                    sum[y, x] = p + sum[y - 1, x] + sum[y, x - 1] - sum[y - 1, x - 1];
+                }
+            }
+
+            for (int s = 1; s <= 300; s++) {
+                for (int y = s; y <= 300; y++) {
+                    for (int x = s; x <= 300; x++) {
+                        int iy = y;
+                        int ix = x;
+                        int iys = y - s;
+                        int ixs = x - s;
+                        int total = sum[y, x] - sum[y - s, x] - sum[y, x - s] + sum[y - s, x - s];
+
+                        if (total > best) {
+                            best = total;
+                            bx = x;
+                            by = y;
+                            bs = s;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine($"{bx - bs + 1},{by - bs + 1},{bs}");
+        }
+
+        private static int CalculateFuelCellPower(int x, int y, int gridSerial) {
+            int rackId = x + 10;
+            int powerLevel = rackId * y;
+            powerLevel += gridSerial;
+            powerLevel *= rackId;
+            powerLevel = (powerLevel / 100) % 10;
+            return powerLevel - 5;
         }
     }
 }
