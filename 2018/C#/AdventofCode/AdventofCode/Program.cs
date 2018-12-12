@@ -31,7 +31,8 @@ namespace AdventofCode {
             //Day9(435, 71184);
             //Day9(435, 7118400);
             //Day11_Question1();
-            StolenDay11();
+            //StolenDay11();
+            Day12();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -872,6 +873,38 @@ namespace AdventofCode {
             powerLevel *= rackId;
             powerLevel = (powerLevel / 100) % 10;
             return powerLevel - 5;
+        }
+
+        private static void Day12() {
+            Console.WriteLine("Day 12 - Question 1:");
+
+            string input = File.ReadAllText($"{path}Advent of Code - Day 12 - Plants.txt");
+
+            string[] inputs = input.Split('\n');
+
+            string[] starting = inputs[0].Split(' ');
+
+            List<string> rules = new List<string>();
+
+            for (int i = 2; i < inputs.Length; i++)
+                rules.Add(inputs[i]);
+
+            Plants plants = new Plants(starting[2], rules.ToArray());
+
+            for(int i = 0; i < 20; i++) {
+                plants.NextGen();
+            }
+
+            Console.WriteLine($"Answer Q12.1: {plants.Count()}\n");
+
+            Console.WriteLine("Day 12 - Question 2:");
+
+            plants = new Plants(starting[2], rules.ToArray());
+
+            for (long i = 0; i < 500; i++)
+                plants.NextGen();
+
+            Console.WriteLine($"Answer Q12.2: {plants.Count() + 22 *(50000000000 - 500)}\n");
         }
     }
 }
