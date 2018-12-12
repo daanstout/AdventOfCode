@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,7 +19,9 @@ namespace AdventOfCode {
             //Day2_Question1();
             //Day2_Question2();
             //Day3();
-            Day4();
+            //Day4();
+            //Day5();
+            Day6();
 
             Console.WriteLine("Done! Press a key to end the console.");
 
@@ -60,7 +63,7 @@ namespace AdventOfCode {
 
             int Area(int l, int w, int h) => (2 * l * w) + (2 * l * h) + (2 * w * h);
 
-            string input = File.ReadAllText($"{path}Advent of Code Box Dimensions.txt");
+            string input = File.ReadAllText($"{path}Advent of Code - Day 2 -Box Dimensions.txt");
 
             string[] inputs = input.Split('\n');
 
@@ -89,7 +92,7 @@ namespace AdventOfCode {
         private static void Day2_Question2() {
             Console.WriteLine("Day 2 - Question 2:");
 
-            string input = File.ReadAllText($"{path}Advent of Code Box Dimensions.txt");
+            string input = File.ReadAllText($"{path}Advent of Code - Day 2 -Box Dimensions.txt");
 
             string[] inputs = input.Split('\n');
 
@@ -219,7 +222,7 @@ namespace AdventOfCode {
                 while (true) {
                     string hashed = GetMD5Hash(hash, input + i);
 
-                    if(hashed.Substring(0, 5).Equals("00000")) {
+                    if (hashed.Substring(0, 5).Equals("00000")) {
                         Console.WriteLine($"Answer Q4.1: {i}\n");
                         break;
                     }
@@ -248,9 +251,136 @@ namespace AdventOfCode {
         private static string GetMD5Hash(MD5 hash, string input) {
             byte[] data = hash.ComputeHash(Encoding.UTF8.GetBytes(input));
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < data.Length; i++) 
+            for (int i = 0; i < data.Length; i++)
                 sb.Append(data[i].ToString("x2"));
             return sb.ToString();
+        }
+
+        private static void Day5() {
+            Console.WriteLine("Day 5 - Question 1:");
+
+            string input = File.ReadAllText($"{path}Advent of Code - Day 5 - Nice or Naughty.txt");
+
+            string[] inputs = input.Split('\n');
+
+            {
+                char[] vowels = new char[5] { 'a', 'e', 'i', 'o', 'u' };
+                string[] naughtyStrings = new string[4] { "ab", "cd", "pq", "xy" };
+
+                List<string> nice = new List<string>();
+                List<string> naughty = new List<string>();
+
+                foreach (string s in inputs) {
+                    bool isNaughty = false;
+
+                    foreach (string n in naughtyStrings)
+                        if (s.Contains(n))
+                            isNaughty = true;
+
+                    if (isNaughty) {
+                        naughty.Add(s);
+                        continue;
+                    }
+
+                    int numVowels = 0;
+                    bool hasDouble = false;
+                    for (int i = 0; i < s.Length; i++) {
+                        if (vowels.Contains(s[i]))
+                            numVowels++;
+
+                        if (i < s.Length - 1)
+                            if (s[i] == s[i + 1])
+                                hasDouble = true;
+
+                    }
+
+                    if (numVowels >= 3 && hasDouble)
+                        nice.Add(s);
+                    else
+                        naughty.Add(s);
+                }
+
+                Console.WriteLine($"Answer Q5.1: {nice.Count}\n");
+            }
+            {
+                Console.WriteLine("Day 5 - Question 2:");
+
+                List<string> nice = new List<string>();
+                List<string> naughty = new List<string>();
+
+                foreach (string s in inputs) {
+                    bool hasRepeat = false;
+                    bool hasDouble = false;
+                    for (int i = 0; i < s.Length - 3; i++) {
+                        if (s[i] == s[i + 2])
+                            hasDouble = true;
+
+                        if (s.Length - s.Replace(s.Substring(i, 2), "").Length >= 4)
+                            hasRepeat = true;
+                    }
+
+                    if (hasRepeat && hasDouble)
+                        nice.Add(s);
+                    else
+                        naughty.Add(s);
+                }
+
+                Console.WriteLine($"Answer Q5.2: {nice.Count}\n");
+            }
+        }
+
+        private static void Day6() {
+            Console.WriteLine("Day 6 - Question 1:");
+
+            string input = File.ReadAllText($"{path}Advent of Code - Day 6 - Lights.txt");
+
+            string[] inputs = input.Split('\n');
+
+            {
+                bool[,] grid = new bool[1000, 1000];
+
+                foreach (string s in inputs) {
+                    string[] split = s.Split(' ');
+                    string[] start;
+                    string[] end;
+                    Point startP;
+                    Point endP;
+                    switch (split[0]) {
+                        case "toggle":
+                            start = split[1].Split(',');
+                            end = split[3].Split(',');
+                            startP = new Point(Convert.ToInt32(start[0]), Convert.ToInt32(start[1]));
+                            endP = new Point(Convert.ToInt32(end[0]), Convert.ToInt32(end[1]));
+
+                            for (int x = startP.X; x <= endP.X; x++) {
+                                for (int y = startP.Y; y <= endP.Y; y++) {
+                                    grid[x, y] = !grid[x, y];
+                                }
+                            }
+                            break;
+                        case "turn":
+                            start = split[2].Split(',');
+                            end = split[4].Split(',');
+                            startP = new Point(Convert.ToInt32(start[0]), Convert.ToInt32(start[1]));
+                            endP = new Point(Convert.ToInt32(end[0]), Convert.ToInt32(end[1]));
+
+                            for (int x = startP.X; x <= endP.X; x++) {
+                                for (int y = startP.Y; y <= endP.Y; y++) {
+                                    grid[x, y] = split[1].Equals("on");
+                                }
+                            }
+                            break;
+                    }
+                }
+
+                int count = 0;
+
+                foreach (bool b in grid)
+                    if (b)
+                        count++;
+
+                Console.WriteLine($"Answer Q6.1: {count}\n");
+            }
         }
     }
 }
