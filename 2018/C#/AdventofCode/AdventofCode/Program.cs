@@ -33,7 +33,8 @@ namespace AdventofCode {
             //Day11_Question1();
             //StolenDay11();
             //Day12();
-            Day13();
+            //Day13();
+            Day14();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -922,6 +923,85 @@ namespace AdventofCode {
             //string[] inputs = input.Split('\n');
 
             //Console.WriteLine($"{{{inputs[0].Length}, {inputs.Length}}}");
+        }
+
+        private static void Day14() {
+            Console.WriteLine("Day 14 - Question 1:");
+
+            int input = 440231;
+            //int input = 10;
+            //int input = 51589;
+
+
+            List<int> scores = new List<int> {
+                3,
+                7
+            };
+
+            int elf1Current = 0;
+            int elf2Current = 1;
+
+            for (int i = 0; i < input + 10; i++) {
+                int newScore = scores[elf1Current] + scores[elf2Current];
+
+                List<int> tempList = new List<int>();
+
+                while (newScore >= 10) {
+                    int temp = newScore % 10;
+                    tempList.Insert(0, temp);
+                    newScore /= 10;
+                }
+
+                tempList.Insert(0, newScore);
+
+                scores.AddRange(tempList);
+
+                elf1Current = (elf1Current + scores[elf1Current] + 1) % scores.Count;
+                elf2Current = (elf2Current + scores[elf2Current] + 1) % scores.Count;
+            }
+
+            int it = input;
+            string result = "";
+
+            for (int i = 0; i < 10; i++) {
+                result += scores[it + i].ToString();
+            }
+
+            Console.WriteLine($"Answer Q14.1: {result}\n");
+
+            Console.WriteLine("Day 14 - Question 2:");
+
+            string recipes = "37";
+
+            elf1Current = 0;
+            elf2Current = 1;
+
+            while (true) {
+                int elf1 = Convert.ToInt32(recipes.Substring(elf1Current, 1));
+                int elf2 = Convert.ToInt32(recipes.Substring(elf2Current, 1));
+                int newScore = elf1 + elf2;
+
+                List<int> tempList = new List<int>();
+
+                while (newScore >= 10) {
+                    int temp = newScore % 10;
+                    tempList.Insert(0, temp);
+                    newScore /= 10;
+                }
+
+                tempList.Insert(0, newScore);
+
+                foreach (int j in tempList)
+                    recipes += j.ToString();
+
+                elf1Current = (elf1Current + Convert.ToInt32(recipes.Substring(elf1Current, 1)) + 1) % recipes.Length;
+                elf2Current = (elf2Current + Convert.ToInt32(recipes.Substring(elf2Current, 1)) + 1) % recipes.Length;
+
+                if (recipes.Contains(input.ToString()))
+                    break;
+            }
+
+            Console.WriteLine($"Answer Q14.2: {recipes.Length - input.ToString().Length}\n");
         }
     }
 }
