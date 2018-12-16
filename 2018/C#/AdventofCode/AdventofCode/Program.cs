@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 
 namespace AdventofCode {
     class Program {
-        //const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
-        const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
+        const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        //const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
 
         static void Main(string[] args) {
             Console.WriteLine("Advent of Code - Year 2018");
@@ -34,7 +34,8 @@ namespace AdventofCode {
             //StolenDay11();
             //Day12();
             //Day13();
-            Day14();
+            //Day14();
+            Day16();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -1003,5 +1004,156 @@ namespace AdventofCode {
 
             Console.WriteLine($"Answer Q14.2: {recipes.Length - input.ToString().Length}\n");
         }
+
+        private static void Day16() {
+            Console.WriteLine("Day 16 - Question 1:");
+
+            string input = File.ReadAllText($"{path}Advent of Code - Day 16 - Op Codes.txt");
+
+            //foreach (char c in input) {
+            //    Console.WriteLine(c);
+            //}
+
+            string[] inputs = input.Split("\n\r\n");
+
+            int three = 0;
+
+            List<int>[] possible = new List<int>[16];
+
+            for (int i = 0; i < 16; i++)
+                possible[i] = new List<int>();
+
+            foreach (string s in inputs) {
+                string[] lines = s.Split('\n');
+
+                int reg1, reg2, reg3, reg4;
+                reg1 = Convert.ToInt32(lines[0][9].ToString());
+                reg2 = Convert.ToInt32(lines[0][12].ToString());
+                reg3 = Convert.ToInt32(lines[0][15].ToString());
+                reg4 = Convert.ToInt32(lines[0][18].ToString());
+
+                int com1, com2, com3, com4;
+                string[] coms = lines[1].Split(' ');
+                com1 = Convert.ToInt32(coms[0]);
+                com2 = Convert.ToInt32(coms[1]);
+                com3 = Convert.ToInt32(coms[2]);
+                com4 = Convert.ToInt32(coms[3]);
+
+                int res1, res2, res3, res4;
+                res1 = Convert.ToInt32(lines[2][9].ToString());
+                res2 = Convert.ToInt32(lines[2][12].ToString());
+                res3 = Convert.ToInt32(lines[2][15].ToString());
+                res4 = Convert.ToInt32(lines[2][18].ToString());
+
+                ops[] re = new ops[16] {
+                    Addr,
+                    Addi,
+                    Mulr,
+                    Muli,
+                    Banr,
+                    Bani,
+                    Borr,
+                    Bori,
+                    Setr,
+                    Seti,
+                    Gtir,
+                    Gtri,
+                    Gtrr,
+                    Eqir,
+                    Eqri,
+                    Eqrr
+                };
+
+                int correct = 0;
+
+                for (int i = 0; i < re.Length; i++) {
+                    int[] registry = { reg1, reg2, reg3, reg4 };
+                    re[i](ref registry, com2, com3, com4);
+                    //if (registry[0] == res1 && registry[1] == res2 && registry[2] == res3 && registry[3] == res4) {
+                    //    correct++;
+                    //    if (!possible[i].Contains(com1))
+                    //        possible[i].Add(com1);
+                    //}
+                }
+
+                if (correct >= 3)
+                    three++;
+
+                //Console.WriteLine($"{reg1} - {reg2} - {reg3} - {reg4} --- {com1} - {com2} - {com3} - {com4} --- {res1} - {res2} - {res3} - {res4}");
+            }
+
+            Console.WriteLine($"Answer Q16.1: {three}\n");
+
+            input = File.ReadAllText($"{path}Advent of Code - Day 16 - Op Code Program.txt");
+            inputs = input.Split('\n');
+
+            int[] reg = { 0, 0, 0, 0 };
+
+            ops[] commands = new ops[16] {
+                    Borr,
+                    Seti,
+                    Mulr,
+                    Eqri,
+                    Banr,
+                    Bori,
+                    Bani,
+                    Gtri,
+                    Addr,
+                    Muli,
+                    Addi,
+                    Eqrr,
+                    Gtir,
+                    Eqir,
+                    Setr,
+                    Gtrr
+                };
+
+            foreach (string s in inputs) {
+                int com1, com2, com3, com4;
+                string[] coms = s.Split(' ');
+                com1 = Convert.ToInt32(coms[0]);
+                com2 = Convert.ToInt32(coms[1]);
+                com3 = Convert.ToInt32(coms[2]);
+                com4 = Convert.ToInt32(coms[3]);
+
+                commands[com1](ref reg, com2, com3, com4);
+            }
+
+            Console.WriteLine($"Answer Q16.2: {reg[0]}\n");
+        }
+
+        private delegate void ops(ref int[] reg, int a, int b, int c);
+
+        private static void Addr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] + reg[b];
+
+        private static void Addi(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] + b;
+
+        private static void Mulr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] * reg[b];
+
+        private static void Muli(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] * b;
+
+        private static void Banr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] & reg[b];
+
+        private static void Bani(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] & b;
+
+        private static void Borr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] | reg[b];
+
+        private static void Bori(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] | b;
+
+        private static void Setr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a];
+
+        private static void Seti(ref int[] reg, int a, int b, int c) => reg[c] = a;
+
+        private static void Gtir(ref int[] reg, int a, int b, int c) => reg[c] = a > reg[b] ? 1 : 0;
+
+        private static void Gtri(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] > b ? 1 : 0;
+
+        private static void Gtrr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] > reg[b] ? 1 : 0;
+
+        private static void Eqir(ref int[] reg, int a, int b, int c) => reg[c] = a == reg[b] ? 1 : 0;
+
+        private static void Eqri(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] == b ? 1 : 0;
+
+        private static void Eqrr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] == reg[b] ? 1 : 0;
     }
 }

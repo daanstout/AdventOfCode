@@ -28,7 +28,6 @@
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
             this.frequencyChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.solvePart1 = new System.Windows.Forms.Button();
             this.stepSolvePart1 = new System.Windows.Forms.Button();
             this.stepSolveNumeric = new System.Windows.Forms.NumericUpDown();
             this.stepSolveTimer = new System.Windows.Forms.Timer(this.components);
@@ -36,6 +35,7 @@
             this.frequencyLabel = new System.Windows.Forms.Label();
             this.solvePart2 = new System.Windows.Forms.Button();
             this.solving2BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.solvePart1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.frequencyChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stepSolveNumeric)).BeginInit();
             this.SuspendLayout();
@@ -56,20 +56,6 @@
             this.frequencyChart.Series.Add(series1);
             this.frequencyChart.Size = new System.Drawing.Size(700, 525);
             this.frequencyChart.TabIndex = 0;
-            // 
-            // solvePart1
-            // 
-            this.solvePart1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.solvePart1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.solvePart1.Font = new System.Drawing.Font("Arial", 8F);
-            this.solvePart1.ForeColor = System.Drawing.Color.White;
-            this.solvePart1.Location = new System.Drawing.Point(731, 55);
-            this.solvePart1.Name = "solvePart1";
-            this.solvePart1.Size = new System.Drawing.Size(110, 23);
-            this.solvePart1.TabIndex = 1;
-            this.solvePart1.Text = "Solve Part 1";
-            this.solvePart1.UseVisualStyleBackColor = true;
-            this.solvePart1.Click += new System.EventHandler(this.solvePart1_Click);
             // 
             // stepSolvePart1
             // 
@@ -152,6 +138,20 @@
             this.solving2BackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.solving2BackgroundWorker_DoWork);
             this.solving2BackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.solving2BackgroundWorker_RunWorkerCompleted);
             // 
+            // solvePart1
+            // 
+            this.solvePart1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.solvePart1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.solvePart1.Font = new System.Drawing.Font("Arial", 8F);
+            this.solvePart1.ForeColor = System.Drawing.Color.White;
+            this.solvePart1.Location = new System.Drawing.Point(731, 55);
+            this.solvePart1.Name = "solvePart1";
+            this.solvePart1.Size = new System.Drawing.Size(110, 23);
+            this.solvePart1.TabIndex = 1;
+            this.solvePart1.Text = "Solve Part 1";
+            this.solvePart1.UseVisualStyleBackColor = true;
+            this.solvePart1.Click += new System.EventHandler(this.solvePart1_Click);
+            // 
             // Day1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -175,7 +175,6 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart frequencyChart;
-        private System.Windows.Forms.Button solvePart1;
         private System.Windows.Forms.Button stepSolvePart1;
         private System.Windows.Forms.NumericUpDown stepSolveNumeric;
         private System.Windows.Forms.Timer stepSolveTimer;
@@ -183,5 +182,6 @@
         private System.Windows.Forms.Label frequencyLabel;
         private System.Windows.Forms.Button solvePart2;
         private System.ComponentModel.BackgroundWorker solving2BackgroundWorker;
+        private System.Windows.Forms.Button solvePart1;
     }
 }

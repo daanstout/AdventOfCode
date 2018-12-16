@@ -33,7 +33,7 @@ namespace Visual_Advent_of_Code.Menus {
 
                 using (Font font = new Font("Arial", 13)) {
                     SizeF tabNameSize = g.MeasureString(tabName, font);
-                    PointF p = new PointF((tabSize.Width - tabNameSize.Width) / 2, (tabSize.Height - tabNameSize.Height) / 2);
+                    PointF p = new PointF((tabSize.Width - tabNameSize.Width) / 2, (tabSize.Height - tabNameSize.Height) / 2 + y);
 
                     g.DrawString(tabName, font, Brushes.White, p);
                 }
