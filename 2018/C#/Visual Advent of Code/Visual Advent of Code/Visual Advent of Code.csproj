@@ -53,6 +53,12 @@
     <Compile Include="AdvenfOfCode.Designer.cs">
       <DependentUpon>AdvenfOfCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Menus\UserControls\Day17.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Menus\UserControls\Day17.Designer.cs">
+      <DependentUpon>Day17.cs</DependentUpon>
+    </Compile>
     <Compile Include="Menus\UserControls\Day15.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -72,10 +78,14 @@
     <Compile Include="Utils\Creatures\BaseCreature.cs" />
     <Compile Include="Utils\Creatures\Elf.cs" />
     <Compile Include="Utils\Creatures\Goblin.cs" />
+    <Compile Include="Utils\Field.cs" />
     <Compile Include="Utils\GridSystem\Grid.cs" />
     <Compile Include="Utils\GridSystem\Tile.cs" />
     <EmbeddedResource Include="AdvenfOfCode.resx">
       <DependentUpon>AdvenfOfCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menus\UserControls\Day17.resx">
+      <DependentUpon>Day17.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menus\UserControls\Day1.resx">
       <DependentUpon>Day1.cs</DependentUpon>
