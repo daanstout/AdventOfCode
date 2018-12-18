@@ -22,9 +22,10 @@ namespace Visual_Advent_of_Code {
         public AdventOfCode() {
             InitializeComponent();
 
-            menu.CreateTab("Day 17", new Day17());
-            //menu.CreateTab("Day 15", new Day15());
             //menu.CreateTab("Day 1", new Day1());
+            //menu.CreateTab("Day 15", new Day15());
+            //menu.CreateTab("Day 17", new Day17());
+            menu.CreateTab("Day 18", new Day18());
 
             UserControl control = menu.MouseClick(new Point(0, 1));
 

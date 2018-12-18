@@ -81,22 +81,56 @@ namespace Visual_Advent_of_Code.Utils {
         }
 
         public void Tick() {
+            //for (int y = field.GetLength(1) - 2; y >= 0; y--) {
+            //    for (int x = 300; x < field.GetLength(0) - 1; x++) {
+            //        if (field[x, y] == tileTypes.water_source || field[x, y] == tileTypes.flowing_water) {
+            //            if (field[x, y + 1] == tileTypes.sand) {
+            //                field[x, y + 1] = tileTypes.flowing_water;
+            //                if (field[x, y] == tileTypes.flowing_water)
+            //                    field[x, y] = tileTypes.sand;
+            //            } else if (field[x + 1, y] == tileTypes.sand) {
+            //                field[x + 1, y] = tileTypes.flowing_water;
+            //                if (field[x, y] == tileTypes.flowing_water)
+            //                    field[x, y] = tileTypes.sand;
+            //            } else if(field[x - 1, y] == tileTypes.sand){
+            //                field[x - 1, y] = tileTypes.flowing_water;
+            //                if (field[x, y] == tileTypes.flowing_water)
+            //                    field[x, y] = tileTypes.sand;
+            //            }
+            //        }
+            //    }
+            //}
             for (int y = field.GetLength(1) - 2; y >= 0; y--) {
                 for (int x = 300; x < field.GetLength(0) - 1; x++) {
                     if (field[x, y] == tileTypes.water_source || field[x, y] == tileTypes.flowing_water) {
                         if (field[x, y + 1] == tileTypes.sand) {
-                            field[x, y + 1] = tileTypes.flowing_water;
-                            if (field[x, y] == tileTypes.flowing_water)
-                                field[x, y] = tileTypes.sand;
-                        } else if(field[x - 1, y] == tileTypes.sand){
-                            field[x - 1, y] = tileTypes.flowing_water;
-                            if (field[x, y] == tileTypes.flowing_water)
-                                field[x, y] = tileTypes.sand;
-                        }else if(field[x + 1, y] == tileTypes.sand) {
-                            field[x + 1, y] = tileTypes.flowing_water;
-                            if (field[x, y] == tileTypes.flowing_water)
-                                field[x, y] = tileTypes.sand;
+                            while (field[x, y + 1] == tileTypes.sand) {
+                                field[x, y + 1] = tileTypes.flowing_water;
+                                y++;
+                            }
+                            return;
+                        } else if (field[x - 1, y] == tileTypes.sand) {
+                            while (field[x - 1, y] == tileTypes.sand) {
+                                field[x - 1, y] = tileTypes.flowing_water;
+                                x--;
+                                if (field[x - 1, y - 1] != tileTypes.clay && field[x - 2, y - 1] == tileTypes.clay && field[x - 3, y - 1] != tileTypes.clay)
+                                    break;
+                            }
                         }
+
+                        //if (field[x, y + 1] == tileTypes.sand) {
+                        //    field[x, y + 1] = tileTypes.flowing_water;
+                        //    if (field[x, y] == tileTypes.flowing_water)
+                        //        field[x, y] = tileTypes.sand;
+                        //} else if (field[x + 1, y] == tileTypes.sand) {
+                        //    field[x + 1, y] = tileTypes.flowing_water;
+                        //    if (field[x, y] == tileTypes.flowing_water)
+                        //        field[x, y] = tileTypes.sand;
+                        //} else if (field[x - 1, y] == tileTypes.sand) {
+                        //    field[x - 1, y] = tileTypes.flowing_water;
+                        //    if (field[x, y] == tileTypes.flowing_water)
+                        //        field[x, y] = tileTypes.sand;
+                        //}
                     }
                 }
             }

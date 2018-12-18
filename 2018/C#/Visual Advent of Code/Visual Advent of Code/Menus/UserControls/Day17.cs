@@ -35,11 +35,11 @@ namespace Visual_Advent_of_Code.Menus {
             Draw();
 
             //timer1.Enabled = true;
-            
+
 
             //int smallestX = int.MaxValue, smallestY = int.MaxValue, largestX = int.MinValue, largestY = int.MinValue;
 
-            
+
 
             //foreach (string s in inputs) {
             //    string[] parts = s.Split(',');
@@ -91,16 +91,16 @@ namespace Visual_Advent_of_Code.Menus {
         private void drawPanel_Paint(object sender, PaintEventArgs e) {
             //Console.WriteLine("Draw");
 
-            
+            field.Draw((Bitmap)drawPanel.BackgroundImage);
         }
 
         private void solveTimer_Tick(object sender, EventArgs e) {
             //Console.WriteLine("Tick");
             field.Tick();
 
-            //drawPanel.Invalidate();
+            drawPanel.Invalidate();
 
-            Draw();
+            //Draw();
         }
 
         private void tick_Click(object sender, EventArgs e) {
@@ -109,8 +109,8 @@ namespace Visual_Advent_of_Code.Menus {
 
             field.Tick();
 
-            //drawPanel.Invalidate();
-            Draw();
+            drawPanel.Invalidate();
+            //Draw();
 
             Console.WriteLine(sw.ElapsedMilliseconds);
         }
