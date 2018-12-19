@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 
 namespace AdventofCode {
     class Program {
-        const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
-        //const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
+        //const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
 
         static void Main(string[] args) {
             Console.WriteLine("Advent of Code - Year 2018");
@@ -35,7 +35,8 @@ namespace AdventofCode {
             //Day12();
             //Day13();
             //Day14();
-            Day16();
+            //Day16();
+            Day19();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -1120,6 +1121,65 @@ namespace AdventofCode {
             }
 
             Console.WriteLine($"Answer Q16.2: {reg[0]}\n");
+        }
+
+        private static void Day19() {
+            Console.WriteLine("Day 19 - Question 1:");
+
+            //string[] input = File.ReadAllText($"{path}Advent of Code - Day 19 - Test - Op Codes 2.txt").Split('\n');
+            string[] input = File.ReadAllText($"{path}Advent of Code - Day 19 - Op Codes 2.txt").Split('\n');
+
+            int[] registry = { 1, 0, 0, 0, 0, 0 };
+
+            int instructionIndex = 0;
+            //int instruction = 0;
+
+            //int i = 0;
+
+            instructionIndex = Convert.ToInt32(input[0].Split(' ')[1]);
+
+            while (registry[instructionIndex] + 1 < input.Length) {
+                string[] command = input[registry[instructionIndex] + 1].Split(' ');
+                if (command[0].Equals("#ip")) {
+                    instructionIndex = Convert.ToInt32(command[1]);
+                } else if (command[0].Equals("addr")) {
+                    Addr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("addi")) {
+                    Addi(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("mulr")) {
+                    Mulr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("muli")) {
+                    Muli(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("banr")) {
+                    Banr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("bani")) {
+                    Bani(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("borr")) {
+                    Borr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("bori")) {
+                    Bori(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("setr")) {
+                    Setr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("seti")) {
+                    Seti(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("gtir")) {
+                    Gtir(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("gtri")) {
+                    Gtri(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("gtrr")) {
+                    Gtrr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("eqir")) {
+                    Eqir(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("eqri")) {
+                    Eqri(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                } else if (command[0].Equals("eqrr")) {
+                    Eqrr(ref registry, Convert.ToInt32(command[1]), Convert.ToInt32(command[2]), Convert.ToInt32(command[3]));
+                }
+
+                registry[instructionIndex]++;
+                }
+
+            Console.WriteLine($"Answer Q19.1: {registry[0]}\n");
         }
 
         private delegate void ops(ref int[] reg, int a, int b, int c);
