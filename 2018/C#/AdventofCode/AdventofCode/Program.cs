@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 
 namespace AdventofCode {
     class Program {
-        //const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
-        const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
+        const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        //const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
 
         static void Main(string[] args) {
             Console.WriteLine("Advent of Code - Year 2018");
@@ -36,7 +36,8 @@ namespace AdventofCode {
             //Day13();
             //Day14();
             //Day16();
-            Day19();
+            //Day19();
+            Day23();
 
             Console.WriteLine("Done! Press any key to shut down the window");
 
@@ -1177,7 +1178,7 @@ namespace AdventofCode {
                 }
 
                 registry[instructionIndex]++;
-                }
+            }
 
             Console.WriteLine($"Answer Q19.1: {registry[0]}\n");
         }
@@ -1215,5 +1216,146 @@ namespace AdventofCode {
         private static void Eqri(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] == b ? 1 : 0;
 
         private static void Eqrr(ref int[] reg, int a, int b, int c) => reg[c] = reg[a] == reg[b] ? 1 : 0;
+
+        class Nanobot {
+            public Vector3D position = new Vector3D();
+            public int radius;
+        }
+
+        private static void Day23() {
+            string[] input = File.ReadAllText($"{path}Advent of Code - Day 23 - Nanobots.txt").Split('\n');
+
+            List<Nanobot> bots = new List<Nanobot>();
+
+            int largestIndex = 0;
+            int largestRadius = int.MinValue;
+
+            foreach (string s in input) {
+                string[] split = s.Split(">, ");
+                string[] pos = split[0].Substring(5).Split(',');
+                Nanobot temp = new Nanobot();
+                temp.position.x = Convert.ToInt32(pos[0]);
+                temp.position.y = Convert.ToInt32(pos[1]);
+                temp.position.z = Convert.ToInt32(pos[2]);
+                temp.radius = Convert.ToInt32(split[1].Substring(2));
+
+                if (temp.radius > largestRadius) {
+                    largestRadius = temp.radius;
+                    largestIndex = bots.Count;
+                }
+
+                bots.Add(temp);
+            }
+
+            int inRange = 0;
+
+            foreach (Nanobot bot in bots)
+                if (bot.position != bots[largestIndex].position)
+                    if (bot.position.GetManhattan(bots[largestIndex].position) <= largestRadius)
+                        inRange++;
+
+            Console.WriteLine(inRange);
+
+            List<Nanobot> bot7 = new List<Nanobot>();
+
+            foreach (Nanobot bot in bots)
+                bot7.Add(new Nanobot() { position = (new Vector3D(bot.position) / 10000000), radius = bot.radius / 10000000 });
+
+            //foreach (Nanobot bot in botMil)
+            //    Console.WriteLine(bot.position);
+
+            Vector3D bestPos = new Vector3D();
+            int numBots = 0;
+
+            Vector3D current = new Vector3D(-15, -15, -15);
+
+            for (; current.x <= 15; current.x++) {
+                for (; current.y <= 15; current.y++) {
+                    for (; current.z <= 15; current.z++) {
+                        int numHits = 0;
+                        foreach (Nanobot bot in bot7) {
+                            if (bot.position.GetManhattan(current) <= bot.radius) {
+                                numHits++;
+                            }
+                        }
+                        if (numHits > numBots) {
+                            numBots = numHits;
+                            bestPos = new Vector3D(current);
+                        }
+                    }
+                    current.z = -15;
+                }
+                current.y = -15;
+            }
+
+            List<Nanobot> bot6 = new List<Nanobot>();
+
+            foreach (Nanobot bot in bots)
+                bot6.Add(new Nanobot() { position = (new Vector3D(bot.position) / 1000000), radius = bot.radius / 1000000 });
+
+            current = bestPos * 10;
+
+            Vector3D prevBest = bestPos * 10;
+
+            bestPos = new Vector3D();
+            numBots = 0;
+
+            for(current.x = (int)prevBest.x - 5; current.x <= prevBest.x + 5; current.x++) {
+                for(current.y = (int)prevBest.y - 5; current.y <= prevBest.y + 5; current.y++) {
+                    for(current.z = (int)prevBest.z - 5; current.z <= prevBest.z + 5; current.z++) {
+                        int numHits = 0;
+                        foreach(Nanobot bot in bot6) {
+                            if(bot.position.GetManhattan(current) <= bot.radius) {
+                                numHits++;
+                            }
+                        }
+                        if(numHits > numBots) {
+                            numBots = numHits;
+                            bestPos = new Vector3D(current);
+                        }
+                    }
+                }
+            }
+
+            int mod = 100000;
+
+            while(mod > 1) {
+                List<Nanobot> tempBots = new List<Nanobot>();
+
+                foreach(Nanobot bot in bots)
+                    tempBots.Add(new Nanobot() { position = (new Vector3D(bot.position) / mod), radius = bot.radius / mod });
+
+                current = bestPos * 10;
+
+                prevBest = bestPos * 10;
+
+                bestPos = new Vector3D();
+
+                numBots = 0;
+
+                for (current.x = prevBest.x - 5; current.x <= prevBest.x + 5; current.x++) {
+                    for(current.y = prevBest.y - 5;current.y <= prevBest.y + 5; current.y++) {
+                        for(current.z = prevBest.z; current.z <= prevBest.z + 5; current.z++) {
+                            int numHits = 0;
+                            foreach(Nanobot bot in tempBots) 
+                                if (bot.position.GetManhattan(current) <= bot.radius)
+                                    numHits++;
+                            
+
+                            if(numHits > numBots) {
+                                numBots = numHits;
+                                bestPos = new Vector3D(current);
+                            }
+                        }
+                    }
+                }
+
+                mod /= 10;
+            }
+
+            Console.WriteLine((int)bestPos.GetManhattan(new Vector3D()));
+
+            Console.WriteLine($"{bestPos} -- {numBots}");
+        }
     }
 }

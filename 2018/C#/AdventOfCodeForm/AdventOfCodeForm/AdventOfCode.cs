@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace AdventOfCodeForm {
     public partial class AdventOfCode : Form {
-        private const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
+        private const string path = @"D:\Github\AdventOfCode\2018\Input\";
 
         private float scale = 100f;
 

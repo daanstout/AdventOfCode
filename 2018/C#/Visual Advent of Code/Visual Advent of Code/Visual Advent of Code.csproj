@@ -53,10 +53,16 @@
     <Compile Include="AdvenfOfCode.Designer.cs">
       <DependentUpon>AdvenfOfCode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menus\Day18.cs">
+    <Compile Include="Menus\UserControls\Day22.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Menus\Day18.Designer.cs">
+    <Compile Include="Menus\UserControls\Day22.Designer.cs">
+      <DependentUpon>Day22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\UserControls\Day18.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Menus\UserControls\Day18.Designer.cs">
       <DependentUpon>Day18.cs</DependentUpon>
     </Compile>
     <Compile Include="Menus\UserControls\Day17.cs">
@@ -81,6 +87,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Cave\Cave.cs" />
     <Compile Include="Utils\Creatures\BaseCreature.cs" />
     <Compile Include="Utils\Creatures\Elf.cs" />
     <Compile Include="Utils\Creatures\Goblin.cs" />
@@ -91,7 +98,7 @@
     <EmbeddedResource Include="AdvenfOfCode.resx">
       <DependentUpon>AdvenfOfCode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menus\Day18.resx">
+    <EmbeddedResource Include="Menus\UserControls\Day18.resx">
       <DependentUpon>Day18.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menus\UserControls\Day17.resx">
@@ -102,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Menus\UserControls\Day15.resx">
       <DependentUpon>Day15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menus\UserControls\Day22.resx">
+      <DependentUpon>Day22.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

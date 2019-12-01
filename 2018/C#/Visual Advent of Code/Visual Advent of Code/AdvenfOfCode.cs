@@ -11,8 +11,8 @@ using Visual_Advent_of_Code.Menus;
 
 namespace Visual_Advent_of_Code {
     public partial class AdventOfCode : Form {
-        public const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
-        //public const string path = @"C:\Users\Daan\Desktop\AdventOfCode\2018\Input\";
+        //public const string path = @"C:\Users\daans\Desktop\AdventOfCode\2018\Input\";
+        public const string path = @"D:\Github\AdventOfCode\2018\Input\";
 
         Menus.Menu menu = new Menus.Menu(true, 25);
 
@@ -22,10 +22,11 @@ namespace Visual_Advent_of_Code {
         public AdventOfCode() {
             InitializeComponent();
 
-            //menu.CreateTab("Day 1", new Day1());
-            //menu.CreateTab("Day 15", new Day15());
-            //menu.CreateTab("Day 17", new Day17());
+            menu.CreateTab("Day 1", new Day1());
+            menu.CreateTab("Day 15", new Day15());
+            menu.CreateTab("Day 17", new Day17());
             menu.CreateTab("Day 18", new Day18());
+            menu.CreateTab("Day 22", new Day22());
 
             UserControl control = menu.MouseClick(new Point(0, 1));
 
