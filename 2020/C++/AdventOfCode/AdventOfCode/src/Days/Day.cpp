@@ -18,3 +18,16 @@ std::vector<std::string>* Day::Split(std::stringstream& text, char splitChar) {
 
 	return vec;
 }
+
+std::vector<std::string>* Day::Split(std::string& text, char splitChar) {
+	std::stringstream ss;
+	ss << text;
+	std::vector<std::string>* vec = new std::vector<std::string>();
+	std::string segment;
+
+	while (std::getline(ss, segment, splitChar)) {
+		vec->push_back(segment);
+	}
+
+	return vec;
+}
