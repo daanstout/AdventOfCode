@@ -7,6 +7,7 @@
 #include "Days/Day3.h"
 #include "Days/Day4.h"
 #include "Days/Day5.h"
+#include "Days/Day6.h"
 
 std::vector<std::string>* ImportFile(const std::string& path);
 
@@ -15,13 +16,15 @@ void day2();
 void day3();
 void day4();
 void day5();
+void day6();
 
 int main() {
-	/*day1();
+	day1();
 	day2();
 	day3();
-	day4();*/
+	day4();
 	day5();
+	day6();
 
 	std::getchar();
 }
@@ -78,6 +81,15 @@ void day5() {
 	std::cout << "Day 5" << std::endl;
 	std::vector<std::string>* input = ImportFile("src/Input/Day 5.txt");
 	Day5 day(input);
+	day.Calculate();
+	day.Print();
+	std::cout << std::endl;
+}
+
+void day6() {
+	std::cout << "Day 6" << std::endl;
+	std::vector<std::string>* input = ImportFile("src/Input/Day 6.txt");
+	Day6 day(input);
 	day.Calculate();
 	day.Print();
 	std::cout << std::endl;
