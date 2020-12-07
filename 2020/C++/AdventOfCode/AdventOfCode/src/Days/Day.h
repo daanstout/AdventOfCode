@@ -16,6 +16,7 @@ public:
 protected:
 	std::vector<std::string>* Split(std::stringstream& text, char splitChar);
 	std::vector<std::string>* Split(std::string& text, char splitChar);
+	std::vector<std::string>* Split(const std::string& text, const std::string& splitString);
 
 	std::unique_ptr<std::vector<std::string>> input;
 	std::unique_ptr<std::string> resultOne;
