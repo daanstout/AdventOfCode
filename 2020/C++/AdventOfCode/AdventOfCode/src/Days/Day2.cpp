@@ -3,14 +3,14 @@
 #include <iostream>
 
 Day2::Day2(std::vector<std::string>* input) {
-	this->input = std::make_unique<std::vector<std::string>>(*input);
+	this->input = *input;
 }
 
 void Day2::Calculate() {
 	int CorrectOne = 0;
 	int CorrectTwo = 0;
 
-	for (auto line : *input) {
+	for (auto line : input) {
 		int minCount, maxCount;
 
 		std::stringstream ss;
@@ -38,8 +38,8 @@ void Day2::Calculate() {
 			CorrectTwo++;
 	}
 
-	resultOne = std::make_unique<std::string>(std::to_string(CorrectOne));
-	resultTwo = std::make_unique<std::string>(std::to_string(CorrectTwo));
+	resultOne = std::to_string(CorrectOne);
+	resultTwo = std::to_string(CorrectTwo);
 }
 
 int Day2::CountChar(const std::string str, char c) {

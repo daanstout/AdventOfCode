@@ -3,11 +3,11 @@
 #include <queue>
 
 Day7::Day7(std::vector<std::string>* input) {
-	this->input = std::make_unique<std::vector<std::string>>(*input);
+	this->input = *input;
 }
 
 void Day7::Calculate() {
-	for (const std::string& line : *input) {
+	for (const std::string& line : input) {
 		std::vector<std::string>* spl1 = Split(line, " contain ");
 		Bag* bag = new Bag();
 		bag->name = spl1->at(0).substr(0, spl1->at(0).size() - 1);
@@ -17,8 +17,8 @@ void Day7::Calculate() {
 		bagsIContain.push_back(*bag);
 	}
 
-	for (int line = 0; line < input->size(); line++) {
-		std::vector<std::string>* spl1 = Split(input->at(line).substr(0, input->at(line).size() - 1), " contain ");
+	for (int line = 0; line < input.size(); line++) {
+		std::vector<std::string>* spl1 = Split(input[line].substr(0, input[line].size() - 1), " contain ");
 		std::vector<std::string>* spl2 = Split(spl1->at(1), ", ");
 
 		for (int sub = 0; sub < spl2->size(); sub++) {
@@ -60,9 +60,9 @@ void Day7::Calculate() {
 			q.push(con);
 	}
 
-	resultOne = std::make_unique<std::string>(std::to_string(count));
+	resultOne = std::to_string(count);
 
-	resultTwo = std::make_unique<std::string>(std::to_string(CalculateBagCount(goldIndex)));
+	resultTwo = std::to_string(CalculateBagCount(goldIndex));
 }
 
 int Day7::CalculateBagCount(int index) {

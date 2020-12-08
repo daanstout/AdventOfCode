@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 Day4::Day4(std::vector<std::string>* input) {
-	this->input = std::make_unique<std::vector<std::string>>(*input);
+	this->input = *input;
 }
 
 void Day4::Calculate() {
@@ -27,8 +27,8 @@ void Day4::Calculate() {
 	uint8_t containsTwo = 0;
 
 	std::string cur;
-	for (int i = 0; i < input->size(); i++) {
-		cur = input->at(i);
+	for (int i = 0; i < input.size(); i++) {
+		cur = input[i];
 
 		if (cur == "") {
 			if (containsOne == 0b01111111)
@@ -119,11 +119,6 @@ void Day4::Calculate() {
 	if (containsTwo == 0b01111111)
 		correctTwo++;
 
-	resultOne = std::make_unique<std::string>(std::to_string(correctOne));
-	resultTwo = std::make_unique<std::string>(std::to_string(correctTwo));
+	resultOne = std::to_string(correctOne);
+	resultTwo = std::to_string(correctTwo);
 }
-
-//void Day4::Print() {
-//	for (const std::string& s : *input)
-//		std::cout << s << std::endl;
-//}

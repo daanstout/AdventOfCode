@@ -1,7 +1,7 @@
 #include "Day5.h"
 
 Day5::Day5(std::vector<std::string>* input) {
-	this->input = std::make_unique<std::vector<std::string>>(*input);
+	this->input = *input;
 }
 
 void Day5::Calculate() {
@@ -10,7 +10,7 @@ void Day5::Calculate() {
 	bool seats[127][7] = { false };
 	bool ids[1023] = { false };
 
-	for (const std::string& line : *input) {
+	for (const std::string& line : input) {
 		int row = 0;
 		int column = 0;
 
@@ -33,7 +33,7 @@ void Day5::Calculate() {
 			heighestID = id;
 	}
 
-	resultOne = std::make_unique<std::string>(std::to_string(heighestID));
+	resultOne = std::to_string(heighestID);
 
 	for (int row = 0; row < 127; row++) {
 		for (int column = 0; column < 7; column++) {
@@ -44,7 +44,7 @@ void Day5::Calculate() {
 				if (!ids[id - 1])
 					continue;
 
-				resultTwo = std::make_unique<std::string>(std::to_string(id));
+				resultTwo = std::to_string(id);
 				return;
 			}
 		}

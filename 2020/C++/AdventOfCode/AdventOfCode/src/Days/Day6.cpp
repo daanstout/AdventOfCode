@@ -1,7 +1,7 @@
 #include "Day6.h"
 
 Day6::Day6(std::vector<std::string>* input) {
-	this->input = std::make_unique<std::vector<std::string>>(*input);
+	this->input = *input;
 }
 
 void Day6::Calculate() {
@@ -10,7 +10,7 @@ void Day6::Calculate() {
 	int sumOne = 0;
 	int sumTwo = 0;
 
-	for (const std::string& line : *input) {
+	for (const std::string& line : input) {
 		if (line == "" && groupSize) {
 			for (int i = 0; i < 26; i++) {
 				sumOne += results[i] != 0;
@@ -34,6 +34,6 @@ void Day6::Calculate() {
 		}
 	}
 
-	resultOne = std::make_unique<std::string>(std::to_string(sumOne));
-	resultTwo = std::make_unique<std::string>(std::to_string(sumTwo));
+	resultOne = std::to_string(sumOne);
+	resultTwo = std::to_string(sumTwo);
 }

@@ -13,7 +13,7 @@ class Day7 : public Day {
 public:
 	Day7(std::vector<std::string>* input);
 
-	void Calculate();
+	void Calculate() override;
 private:
 	int CalculateBagCount(int index);
 
