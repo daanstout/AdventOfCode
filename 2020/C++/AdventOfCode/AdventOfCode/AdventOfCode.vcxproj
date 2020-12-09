@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Days\Day9.cpp" />
     <ClCompile Include="src\Days\Day8.cpp" />
     <ClCompile Include="src\Days\Day7.cpp" />
     <ClCompile Include="src\Days\Day6.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Days\Day9.h" />
     <ClInclude Include="src\Days\Day8.h" />
     <ClInclude Include="src\Days\Day7.h" />
     <ClInclude Include="src\Days\Day6.h" />

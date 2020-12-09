@@ -10,6 +10,7 @@
 #include "Days/Day6.h"
 #include "Days/Day7.h"
 #include "Days/Day8.h"
+#include "Days/Day9.h"
 
 std::vector<std::string>* ImportFile(const std::string& path);
 
@@ -25,6 +26,7 @@ int main() {
 	day<Day6>(6, "Day 6.txt");
 	day<Day7>(7, "Day 7.txt");
 	day<Day8>(8, "Day 8.txt");
+	day<Day9>(9, "Day 9.txt");
 
 	std::getchar();
 }
