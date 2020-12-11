@@ -11,6 +11,8 @@
 #include "Days/Day7.h"
 #include "Days/Day8.h"
 #include "Days/Day9.h"
+#include "Days/Day10.h"
+#include "Days/Day11.h"
 
 std::vector<std::string>* ImportFile(const std::string& path);
 
@@ -18,7 +20,7 @@ template<typename T>
 void day(int d, const std::string& file);
 
 int main() {
-	day<Day1>(1, "Day 1.txt");
+	/*day<Day1>(1, "Day 1.txt");
 	day<Day2>(2, "Day 2.txt");
 	day<Day3>(3, "Day 3.txt");
 	day<Day4>(4, "Day 4.txt");
@@ -27,6 +29,8 @@ int main() {
 	day<Day7>(7, "Day 7.txt");
 	day<Day8>(8, "Day 8.txt");
 	day<Day9>(9, "Day 9.txt");
+	day<Day10>(10, "Day 10.txt");*/
+	day<Day11>(11, "Day 11.txt");
 
 	std::getchar();
 }
@@ -44,7 +48,7 @@ std::vector<std::string>* ImportFile(const std::string& path) {
 }
 
 template<typename T>
-void day(int d, const std::string& file) {
+void day(const int d, const std::string& file) {
 	std::cout << "Day " << d << std::endl;
 	std::vector<std::string>* input = ImportFile("src/Input/" + file);
 	T day(input);
