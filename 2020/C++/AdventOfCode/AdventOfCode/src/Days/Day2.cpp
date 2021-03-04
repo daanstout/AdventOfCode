@@ -10,8 +10,8 @@ void Day2::Calculate() {
 	int CorrectOne = 0;
 	int CorrectTwo = 0;
 
-	for (auto line : input) {
-		int minCount, maxCount;
+	for (const std::string& line : input) {
+		size_t minCount, maxCount;
 
 		std::stringstream ss;
 		ss << line;
