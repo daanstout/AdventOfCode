@@ -109,4 +109,45 @@ public static class Extensions {
 
         return heightMap;
     }
+
+    public static IEnumerable<int> Lowest(this IEnumerable<int> source, int count) {
+        List<int> copy = new List<int>(source);
+
+        copy.Sort();
+
+        for (int i = 0; i < count || i < copy.Count; i++) {
+            yield return copy[i];
+        }
+    }
+
+    public static int Multiply(this IEnumerable<int> source) {
+        int multiple = 1;
+
+        foreach (var i in source)
+            multiple *= i;
+
+        return multiple;
+    }
+
+    public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TSource, TAccumulate> func) {
+        var asArray = source.ToArray();
+        TAccumulate accumulate = seed;
+        for (int i = 0; i < asArray.Length - 1; i++) {
+            accumulate = func(accumulate, asArray[i], asArray[i + 1]);
+        }
+        return accumulate;
+    }
+
+    public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TSource, TAccumulate> func, TAccumulate? earlyExitValue = default) {
+        var asArray = source.ToArray();
+        TAccumulate accumulate = seed;
+        for (int i = 0; i < asArray.Length - 1; i++) {
+            accumulate = func(accumulate, asArray[i], asArray[i + 1]);
+
+            if (earlyExitValue != null && earlyExitValue.Equals(accumulate)) {
+                return accumulate;
+            }
+        }
+        return accumulate;
+    }
 }

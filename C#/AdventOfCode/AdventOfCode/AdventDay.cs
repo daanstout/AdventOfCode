@@ -11,16 +11,16 @@ public abstract class AdventDay {
     public int Year { get; }
     public string Title { get; }
 
-    protected string Input => useTest ? testInput : input;
-    protected string[] Lines => useTest ? testLines : lines;
+    protected string Input => UseTest ? testInput! : input;
+    protected string[] Lines => UseTest ? testLines! : lines;
 
-    protected readonly bool useTest;
+    protected bool UseTest { get; private set; }
 
     private readonly string input;
     private readonly string[] lines;
 
-    private readonly string testInput;
-    private readonly string[] testLines;
+    private readonly string? testInput;
+    private readonly string[]? testLines;
 
     protected AdventDay(int day, int year, string title, bool useTest = false) {
         Day = day;
@@ -30,13 +30,15 @@ public abstract class AdventDay {
         input = GetInput();
         lines = input.Split("\n");
 
-        testInput = File.ReadAllText($"TestInput\\Day {day}.txt");
-        testLines = testInput.Split("\r\n");
+        if (File.Exists($"TestInput\\Day {day}.txt")) {
+            testInput = File.ReadAllText($"TestInput\\Day {day}.txt");
+            testLines = testInput.Split("\r\n");
 
-        this.useTest = useTest;
+            UseTest = useTest;
+        }
     }
 
-    public static void SolveAll(Assembly assembly) {
+    public static void SolveAll(Assembly assembly, bool onlyRunLast = true) {
         AdventDay?[] instances = new AdventDay?[25];
         foreach (var type in assembly.GetTypes()) {
             if (typeof(AdventDay).IsAssignableFrom(type)) {
@@ -47,11 +49,15 @@ public abstract class AdventDay {
             }
         }
 
-        for (int i = 0; i < instances.Length; i++) {
-            if (instances[i] == null)
-                continue;
+        if (onlyRunLast) {
+            instances.LastOrDefault(instance => instance != null)?.Solve();
+        } else {
+            for (int i = 0; i < instances.Length; i++) {
+                if (instances[i] == null)
+                    continue;
 
-            instances[i]!.Solve();
+                instances[i]!.Solve();
+            }
         }
     }
 
@@ -59,7 +65,7 @@ public abstract class AdventDay {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Day {Day}: {Title}");
 
-        if (useTest) {
+        if (UseTest) {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("DEBUG ENABLED");
         }
@@ -103,7 +109,7 @@ public abstract class AdventDay {
 
         if (response.IsSuccessStatusCode) {
             var result = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            result = result.Substring(0, result.Length - 1);
+            result = result.Trim();
             Directory.CreateDirectory("Input");
             File.WriteAllText(cacheFile, result);
             return result;

@@ -1,7 +1,7 @@
 ﻿namespace _2021.Days;
 
 public class Day3 : AdventDay {
-    private int Bits => useTest ? 5 : 12;
+    private int Bits => UseTest ? 5 : 12;
 
     public Day3() : base(3, 2021, "Binary Diagnostic") { }
 
