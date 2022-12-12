@@ -15,7 +15,7 @@ public class Day9 : AdventDay {
 
         foreach (var line in Lines) {
             var command = line.Split(' ');
-            for (int i = 0; i < command[1].ToInt(); i++) {
+            for (int i = 0; i < command[1].ToInt32(); i++) {
                 head += command[0] switch {
                     "R" => new Vector2(1, 0),
                     "U" => new Vector2(0, 1),
@@ -42,7 +42,7 @@ public class Day9 : AdventDay {
         foreach (var line in Lines) {
             var command = line.Split(' ');
 
-            for(int i = 0; i < command[1].ToInt(); i++) {
+            for(int i = 0; i < command[1].ToInt32(); i++) {
                 rope[0] += command[0] switch {
                     "R" => new Vector2(1, 0),
                     "U" => new Vector2(0, 1),

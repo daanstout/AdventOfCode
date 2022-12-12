@@ -30,9 +30,9 @@ public class Day5 : AdventDay {
 
         for (int i = endInitialTowerState + 1; i < Lines.Length; i++) {
             string[] instructions = Lines[i].Split(' ');
-            int count = instructions[1].ToInt();
-            int from = instructions[3].ToInt() - 1;
-            int to = instructions[5].ToInt() - 1;
+            int count = instructions[1].ToInt32();
+            int from = instructions[3].ToInt32() - 1;
+            int to = instructions[5].ToInt32() - 1;
 
             for (int current = 0; current < count; current++) {
                 char c = stacks1[from].Pop();
@@ -73,9 +73,9 @@ public class Day5 : AdventDay {
 
         for (int i = endInitialTowerState + 1; i < Lines.Length; i++) {
             string[] instructions = Lines[i].Split(' ');
-            int count = instructions[1].ToInt();
-            int from = instructions[3].ToInt() - 1;
-            int to = instructions[5].ToInt() - 1;
+            int count = instructions[1].ToInt32();
+            int from = instructions[3].ToInt32() - 1;
+            int to = instructions[5].ToInt32() - 1;
 
             Stack<char> tempStack = new Stack<char>();
 

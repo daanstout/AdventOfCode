@@ -32,9 +32,18 @@ public static class Extensions {
             array[i] = factory();
     }
 
-    public static int ToInt(this string str) => string.IsNullOrWhiteSpace(str) ? 0 : int.Parse(str);
+    public static int ToInt32(this string str) => string.IsNullOrWhiteSpace(str) ? 0 : int.Parse(str);
 
-    public static int ToInt(this char c) => c.ToString().ToInt();
+    public static short ToInt16(this string str) => string.IsNullOrWhiteSpace(str) ? (short)0 : short.Parse(str);
+
+    public static int ToInt32(this char c) => c.ToString().ToInt32();
+
+    public static float ToFloat(this string str) => string.IsNullOrWhiteSpace(str) ? 0.0f : float.Parse(str);
+
+    public static Vector2 ToVec2(this string str, char split = ',') {
+        var values = str.Split(split);
+        return new(values[0].ToFloat(), values[1].ToFloat());
+    }
 
     public static int IndexOf<T>(this IEnumerable<T> source, T item, Func<T, T, bool> comparer) {
         int count = 0;
@@ -90,6 +99,10 @@ public static class Extensions {
     public static Vector2 ToVector2(this (int x, int y) source) => new(source.x, source.y);
 
     public static int[,] ToHeightMap(this string[] source, out int width, out int height) {
+        return source.ToHeightMap(c => c.ToInt32(), out width, out height);
+    }
+
+    public static int[,] ToHeightMap(this string[] source, Func<char, int> conversation, out int width, out int height) {
         if (source.Length == 0) {
             width = 0;
             height = 0;
@@ -103,25 +116,69 @@ public static class Extensions {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                heightMap[x, y] = source[y][x].ToInt();
+                heightMap[x, y] = conversation(source[y][x]);
             }
         }
 
         return heightMap;
     }
 
+    public static (int row, int column) IndexOf(this string[] source, char c) {
+        for(int i = 0; i < source.Length; i++) {
+            var index = source[i].IndexOf(c);
+
+            if (index != -1)
+                return (i, index);
+        }
+
+        return (-1, -1);
+    }
+
+    public static (TSecond, TFirst) Inverse<TFirst, TSecond>(this (TFirst, TSecond) tuple) => (tuple.Item2, tuple.Item1);
+
+    public static T Get<T>(this T[,] source, (int, int) index) => source[index.Item1, index.Item2];
+
     public static IEnumerable<int> Lowest(this IEnumerable<int> source, int count) {
         List<int> copy = new List<int>(source);
 
         copy.Sort();
 
-        for (int i = 0; i < count || i < copy.Count; i++) {
+        for (int i = 0; i < count && i < copy.Count; i++) {
             yield return copy[i];
+        }
+    }
+
+    public static IEnumerable<int> Highest(this IEnumerable<int> source, int count) {
+        List<int> copy = new List<int>(source);
+
+        copy.Sort();
+
+        for (int i = 0; i < count && i < copy.Count; i++) {
+            yield return copy[^(i + 1)];
+        }
+    }
+
+    public static IEnumerable<long> Highest(this IEnumerable<long> source, int count) {
+        List<long> copy = new List<long>(source);
+
+        copy.Sort();
+
+        for (int i = 0; i < count && i < copy.Count; i++) {
+            yield return copy[^(i + 1)];
         }
     }
 
     public static int Multiply(this IEnumerable<int> source) {
         int multiple = 1;
+
+        foreach (var i in source)
+            multiple *= i;
+
+        return multiple;
+    }
+
+    public static long Multiply(this IEnumerable<long> source) {
+        long multiple = 1;
 
         foreach (var i in source)
             multiple *= i;
@@ -149,5 +206,46 @@ public static class Extensions {
             }
         }
         return accumulate;
+    }
+
+    public static int Count<T>(this T[,] source, Func<T, bool> predicate) {
+        int count = 0;
+        for(int i = 0; i < source.GetLength(0); i++) {
+            for(int j = 0; j < source.GetLength(1); j++) {
+                if (predicate(source[i, j]))
+                    count++;
+            }
+        }
+
+        return count;
+    }
+
+    public static int Sum(this int[,] source) {
+        int count = 0;
+        for (int i = 0; i < source.GetLength(0); i++) {
+            for (int j = 0; j < source.GetLength(1); j++) {
+                count += source[i, j];
+            }
+        }
+
+        return count;
+    }
+
+    public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) {
+        if(!dictionary.TryGetValue(key, out var value)) {
+            value = default;
+            dictionary.Add(key, default!);
+        }
+
+        return value!;
+    }
+
+    public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> createFunc) {
+        if (!dictionary.TryGetValue(key, out var value)) {
+            value = createFunc();
+            dictionary.Add(key, value);
+        }
+
+        return value;
     }
 }

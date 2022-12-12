@@ -16,7 +16,7 @@ public class Day9 : AdventDay {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                heightMap[x, y] = Lines[y][x].ToInt();
+                heightMap[x, y] = Lines[y][x].ToInt32();
             }
         }
 
@@ -48,7 +48,7 @@ public class Day9 : AdventDay {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                heightMap[x, y] = Lines[y][x].ToInt();
+                heightMap[x, y] = Lines[y][x].ToInt32();
                 coords.Add((x, y));
             }
         }

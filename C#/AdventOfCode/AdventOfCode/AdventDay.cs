@@ -11,6 +11,8 @@ public abstract class AdventDay {
     public int Year { get; }
     public string Title { get; }
 
+    public long TicksToCalculate { get; private set; }
+
     protected string Input => UseTest ? testInput! : input;
     protected string[] Lines => UseTest ? testLines! : lines;
 
@@ -49,16 +51,26 @@ public abstract class AdventDay {
             }
         }
 
+        Console.WriteLine("Solving Advent of code:");
+
+        long totalTicks = 0;
         if (onlyRunLast) {
-            instances.LastOrDefault(instance => instance != null)?.Solve();
+            var instance = instances.LastOrDefault(instance => instance != null);
+
+            instance?.Solve();
+            totalTicks += instance?.TicksToCalculate ?? 0;
         } else {
             for (int i = 0; i < instances.Length; i++) {
                 if (instances[i] == null)
                     continue;
 
                 instances[i]!.Solve();
+                totalTicks += instances[i]!.TicksToCalculate;
             }
         }
+
+        var timeToCalculate = TimeSpan.FromTicks(totalTicks).TotalMilliseconds;
+        Console.WriteLine($"Total time spent: {timeToCalculate:F3} ms");
     }
 
     public void Solve() {
@@ -70,10 +82,11 @@ public abstract class AdventDay {
             Console.WriteLine("DEBUG ENABLED");
         }
 
-        SolvePart(SolvePart1, "Part One:");
+        SolvePart(SolvePart1, "Part One:", out var oneTicks);
         Console.WriteLine();
-        SolvePart(SolvePart2, "Part Two:");
+        SolvePart(SolvePart2, "Part Two:", out var twoTicks);
         Console.WriteLine();
+        TicksToCalculate = oneTicks + twoTicks;
     }
 
     protected abstract object SolvePart1();
@@ -118,7 +131,7 @@ public abstract class AdventDay {
         throw new WebException($"Could not download input file for Year: {Year} - Day: {Day}");
     }
 
-    private static void SolvePart(Func<object> solveFunc, string header) {
+    private static void SolvePart(Func<object> solveFunc, string header, out long ticksToCalculate) {
         var stopwatch = Stopwatch.StartNew();
 
         var result = solveFunc();
@@ -131,6 +144,13 @@ public abstract class AdventDay {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(result);
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine($"Calculated in: {TimeSpan.FromTicks(stopwatch.ElapsedTicks).TotalMilliseconds:F3} ms");
+        ticksToCalculate = stopwatch.ElapsedTicks;
+        var timeToCalculate = TimeSpan.FromTicks(stopwatch.ElapsedTicks).TotalMilliseconds;
+        string timeSuffix = "ms";
+        if (timeToCalculate < 0.01) {
+            timeToCalculate *= 1000;
+            timeSuffix = "μs";
+        }
+        Console.WriteLine($"Calculated in: {timeToCalculate:F3} {timeSuffix}");
     }
 }

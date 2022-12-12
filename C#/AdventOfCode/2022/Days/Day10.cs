@@ -32,7 +32,7 @@ public class Day10 : AdventDay {
                     signalStrengths.Add(x * cycle);
                 }
 
-                x += command[1].ToInt();
+                x += command[1].ToInt32();
             }
         }
 
@@ -61,7 +61,7 @@ public class Day10 : AdventDay {
 
                 cycle++;
 
-                x += command[1].ToInt();
+                x += command[1].ToInt32();
             }
         }
 

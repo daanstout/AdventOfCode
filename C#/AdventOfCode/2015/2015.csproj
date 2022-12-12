@@ -12,4 +12,14 @@
     <ProjectReference Include="..\AdventOfCode\AdventOfCode.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestInput\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestInput\Day 7.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
