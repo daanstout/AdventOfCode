@@ -193,36 +193,37 @@ public class Day7 : AdventDay {
     public Day7() : base(7, 2015, "Some Assembly Required") { }
 
     protected override object SolvePart1() {
-        Dictionary<string, ushort> values = new Dictionary<string, ushort>();
-        Dictionary<string, Func<ushort>> gates = new Dictionary<string, Func<ushort>>();
+        //Dictionary<string, ushort> values = new Dictionary<string, ushort>();
+        //Dictionary<string, Func<ushort>> gates = new Dictionary<string, Func<ushort>>();
 
-        foreach (var line in Lines) {
-            var command = line.Split(' ');
-            string target = command[^1];
+        //foreach (var line in Lines) {
+        //    var command = line.Split(' ');
+        //    string target = command[^1];
 
-            if (command.Length == 3) {
-                if (ushort.TryParse(command[0], out var value)) {
-                    gates[target] = () => value;
-                    values[target] = value;
-                } else {
-                    gates[command[2]] = () => {
-                        if (!values.TryGetValue(target, out value)) {
-                            value = gates[command[0]]();
-                            values[target] = value;
-                        };
-                        return value;
-                    };
-                }
-            } else if (command.Length == 4) {
-                gates[target] = () => {
-                    if(!values.TryGetValue(target, out var value)) {
-                        value = 
-                    }
-                }
-            }
-        }
+        //    if (command.Length == 3) {
+        //        if (ushort.TryParse(command[0], out var value)) {
+        //            gates[target] = () => value;
+        //            values[target] = value;
+        //        } else {
+        //            gates[command[2]] = () => {
+        //                if (!values.TryGetValue(target, out value)) {
+        //                    value = gates[command[0]]();
+        //                    values[target] = value;
+        //                };
+        //                return value;
+        //            };
+        //        }
+        //    } else if (command.Length == 4) {
+        //        gates[target] = () => {
+        //            if(!values.TryGetValue(target, out var value)) {
+        //                value = 
+        //            }
+        //        }
+        //    }
+        //}
 
-        return gates["a"]();
+        //return gates["a"]();
+        return null;
     }
 
     protected override object SolvePart2() {

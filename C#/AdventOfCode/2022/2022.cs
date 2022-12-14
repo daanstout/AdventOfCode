@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
 
-AdventDay.SolveAll(Assembly.GetExecutingAssembly(), false);
+AdventDay.SolveAll(Assembly.GetExecutingAssembly());
 
 Console.ReadKey();

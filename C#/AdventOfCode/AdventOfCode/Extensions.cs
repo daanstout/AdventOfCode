@@ -248,4 +248,25 @@ public static class Extensions {
 
         return value;
     }
+
+    public static IEnumerable<IEnumerable<T>> GroupsOf<T>(this IEnumerable<T> input, int groupSize) {
+        var current = new T[groupSize];
+        var index = 0;
+
+        foreach (var item in input) {
+            current[index++] = item;
+            if (index != groupSize) {
+                continue;
+            }
+
+            yield return current;
+
+            current = new T[groupSize];
+            index = 0;
+        }
+
+        if (index > 0) {
+            yield return current.Take(index).ToArray();
+        }
+    }
 }
