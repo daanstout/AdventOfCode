@@ -16,7 +16,7 @@ public class Day5 : AdventDay {
         var vowelString = "aeiou";
 
         foreach (var line in Lines) {
-            if (!(line.Where(c => vowelString.Contains(c)).Count() >= 3))
+            if (!(line.Count(vowelString.Contains) >= 3))
                 continue;
 
             if (!line.Aggregate(false, (accumulate, currentChar, nextChar) => accumulate |= currentChar == nextChar, true)) {
