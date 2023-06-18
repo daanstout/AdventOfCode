@@ -4,37 +4,75 @@ using System.Reflection;
 
 namespace AdventOfCode;
 
+/// <summary>
+/// The base class of advent of code solutions.
+/// <para>Put the code to solve the individual parts in <see cref="SolvePart1(out T)"/> and <see cref="SolvePart2(T)"/>.</para>
+/// <para>Allows for keeping state between solves.</para>
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public abstract class AdventDay<T> : AdventDay {
     private T state = default!;
 
     protected AdventDay(int day, int year, string title, bool useTest = false) : base(day, year, title, useTest) { }
 
+    /// <inheritdoc/>
     protected override sealed object SolvePart1() {
         return SolvePart1(out state);
     }
 
+    /// <inheritdoc/>
     protected override sealed object SolvePart2() {
         return SolvePart2(state);
     }
 
+    /// <summary>
+    /// The solution to the first problem of the day.
+    /// </summary>
+    /// <param name="state">The state to pass to <see cref="SolvePart2(T)"/></param>
+    /// <returns>The result of the problem.</returns>
     protected abstract object SolvePart1(out T state);
 
+    /// <summary>
+    /// The solution to the second problem of the day.
+    /// </summary>
+    /// <param name="state">The state passed back out from <see cref="SolvePart1(out T)"/></param>
+    /// <returns>The result of the problem.</returns>
     protected abstract object SolvePart2(T state);
 }
 
 /// <summary>
 /// The base class of advent of code solutions.
+/// <para>Put the code to solve the individual parts in <see cref="SolvePart1"/> and <see cref="SolvePart2"/>.</para>
+/// <para>To keep state between solves, the use of <see cref="AdventDay{T}"/> can be used instead.</para>
 /// </summary>
 public abstract class AdventDay {
     private const string BASE_URL = "https://adventofcode.com";
 
+    /// <summary>
+    /// The day of this problem.
+    /// </summary>
     public int Day { get; }
+    /// <summary>
+    /// The year this problem comes from.
+    /// </summary>
     public int Year { get; }
+    /// <summary>
+    /// The title of the problem.
+    /// </summary>
     public string Title { get; }
 
+    /// <summary>
+    /// Whether we are currently using test data or the actual problem data.
+    /// </summary>
     protected bool UseTest { get; private set; }
 
+    /// <summary>
+    /// The input to the problem.
+    /// </summary>
     protected string Input => UseTest ? testInput! : input;
+    /// <summary>
+    /// The input to the problem, seperated by lines.
+    /// </summary>
     protected string[] Lines => UseTest ? testLines! : lines;
 
     private readonly string input;
@@ -61,6 +99,12 @@ public abstract class AdventDay {
         }
     }
 
+    /// <summary>
+    /// Solves all the <see cref="AdventDay"/> solutions found in the passed assembly.
+    /// <para>Keep in mind that only 25 solutions can be used, 1 for each day. Not passing the day parameter in the constructor, or using a value not between 1 and 25 is not supported.</para>
+    /// </summary>
+    /// <param name="assembly">The assembly to search for solutions in.</param>
+    /// <param name="onlyRunLast">If <see langword="true"/>, only runs the last solution it found (so the solution for the latest day). If <see langword="false"/>, runs all found solutions.</param>
     public static void SolveAll(Assembly assembly, bool onlyRunLast = true) {
         AdventDay?[] instances = new AdventDay?[25];
         foreach (var type in assembly.GetTypes()) {
@@ -94,6 +138,9 @@ public abstract class AdventDay {
         Console.WriteLine($"Total time spent: {timeToCalculate:F3} ms");
     }
 
+    /// <summary>
+    /// Solves the problem using the solutions created.
+    /// </summary>
     public void Solve() {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"Day {Day}: {Title}");
@@ -109,8 +156,16 @@ public abstract class AdventDay {
         timeToCalculate = oneTicks + twoTicks;
     }
 
+    /// <summary>
+    /// The solution to the first problem of the day.
+    /// </summary>
+    /// <returns>The result of the problem.</returns>
     protected abstract object SolvePart1();
 
+    /// <summary>
+    /// The solution to the second problem of the day.
+    /// </summary>
+    /// <returns>The result of the problem.</returns>
     protected abstract object SolvePart2();
 
     private string GetInput() {
@@ -154,7 +209,13 @@ public abstract class AdventDay {
     private static void SolvePart(Func<object> solveFunc, string header, out TimeSpan timeToCalculate) {
         var stopwatch = Stopwatch.StartNew();
 
-        var result = solveFunc();
+        object? result = null;
+
+        try {
+            result = solveFunc();
+        } catch (NotImplementedException) { } catch (Exception) {
+            throw;
+        }
 
         stopwatch.Stop();
 
