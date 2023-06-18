@@ -223,11 +223,11 @@ public class Day7 : AdventDay {
         //}
 
         //return gates["a"]();
-        return null;
+        return null!;
     }
 
     protected override object SolvePart2() {
 
-        return null;
+        return null!;
     }
 }

@@ -4,6 +4,27 @@ using System.Reflection;
 
 namespace AdventOfCode;
 
+public abstract class AdventDay<T> : AdventDay {
+    private T state = default!;
+
+    protected AdventDay(int day, int year, string title, bool useTest = false) : base(day, year, title, useTest) { }
+
+    protected override sealed object SolvePart1() {
+        return SolvePart1(out state);
+    }
+
+    protected override sealed object SolvePart2() {
+        return SolvePart2(state);
+    }
+
+    protected abstract object SolvePart1(out T state);
+
+    protected abstract object SolvePart2(T state);
+}
+
+/// <summary>
+/// The base class of advent of code solutions.
+/// </summary>
 public abstract class AdventDay {
     private const string BASE_URL = "https://adventofcode.com";
 
@@ -11,18 +32,18 @@ public abstract class AdventDay {
     public int Year { get; }
     public string Title { get; }
 
-    public long TicksToCalculate { get; private set; }
+    protected bool UseTest { get; private set; }
 
     protected string Input => UseTest ? testInput! : input;
     protected string[] Lines => UseTest ? testLines! : lines;
-
-    protected bool UseTest { get; private set; }
 
     private readonly string input;
     private readonly string[] lines;
 
     private readonly string? testInput;
     private readonly string[]? testLines;
+
+    private TimeSpan timeToCalculate;
 
     protected AdventDay(int day, int year, string title, bool useTest = false) {
         Day = day;
@@ -43,7 +64,7 @@ public abstract class AdventDay {
     public static void SolveAll(Assembly assembly, bool onlyRunLast = true) {
         AdventDay?[] instances = new AdventDay?[25];
         foreach (var type in assembly.GetTypes()) {
-            if (typeof(AdventDay).IsAssignableFrom(type)) {
+            if (typeof(AdventDay).IsAssignableFrom(type) && !type.IsGenericType) {
                 if (Activator.CreateInstance(type) is not AdventDay instance)
                     continue;
 
@@ -53,23 +74,23 @@ public abstract class AdventDay {
 
         Console.WriteLine("Solving Advent of code:");
 
-        long totalTicks = 0;
+        TimeSpan totalTicks = TimeSpan.Zero;
         if (onlyRunLast) {
             var instance = instances.LastOrDefault(instance => instance != null);
 
             instance?.Solve();
-            totalTicks += instance?.TicksToCalculate ?? 0;
+            totalTicks += instance?.timeToCalculate ?? TimeSpan.Zero;
         } else {
             for (int i = 0; i < instances.Length; i++) {
                 if (instances[i] == null)
                     continue;
 
                 instances[i]!.Solve();
-                totalTicks += instances[i]!.TicksToCalculate;
+                totalTicks += instances[i]!.timeToCalculate;
             }
         }
 
-        var timeToCalculate = TimeSpan.FromTicks(totalTicks).TotalMilliseconds;
+        var timeToCalculate = totalTicks.TotalMilliseconds;
         Console.WriteLine($"Total time spent: {timeToCalculate:F3} ms");
     }
 
@@ -81,12 +102,11 @@ public abstract class AdventDay {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("DEBUG ENABLED");
         }
-
         SolvePart(SolvePart1, "Part One:", out var oneTicks);
         Console.WriteLine();
         SolvePart(SolvePart2, "Part Two:", out var twoTicks);
         Console.WriteLine();
-        TicksToCalculate = oneTicks + twoTicks;
+        timeToCalculate = oneTicks + twoTicks;
     }
 
     protected abstract object SolvePart1();
@@ -131,7 +151,7 @@ public abstract class AdventDay {
         throw new WebException($"Could not download input file for Year: {Year} - Day: {Day}");
     }
 
-    private static void SolvePart(Func<object> solveFunc, string header, out long ticksToCalculate) {
+    private static void SolvePart(Func<object> solveFunc, string header, out TimeSpan timeToCalculate) {
         var stopwatch = Stopwatch.StartNew();
 
         var result = solveFunc();
@@ -144,13 +164,13 @@ public abstract class AdventDay {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(result);
         Console.ForegroundColor = ConsoleColor.White;
-        ticksToCalculate = stopwatch.ElapsedTicks;
-        var timeToCalculate = TimeSpan.FromTicks(stopwatch.ElapsedTicks).TotalMilliseconds;
+        timeToCalculate = stopwatch.Elapsed;
+        var timeToPrint = timeToCalculate.TotalMilliseconds;
         string timeSuffix = "ms";
-        if (timeToCalculate < 0.01) {
-            timeToCalculate *= 1000;
+        if (timeToPrint < 0.01) {
+            timeToPrint *= 1000;
             timeSuffix = "μs";
         }
-        Console.WriteLine($"Calculated in: {timeToCalculate:F3} {timeSuffix}");
+        Console.WriteLine($"Calculated in: {timeToPrint:F3} {timeSuffix}");
     }
 }
