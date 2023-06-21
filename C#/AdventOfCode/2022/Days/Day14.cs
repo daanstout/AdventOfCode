@@ -169,24 +169,4 @@ public class Day14 : AdventDay {
 
         return loops;
     }
-
-    private static void PrintMap(byte[,] map, int x500, int yOffset) {
-        StringBuilder builder = new StringBuilder();
-
-        for (int y = 0; y < map.GetLength(1); y++) {
-            for (int x = 0; x < map.GetLength(0); x++) {
-                if (x == x500 && y == yOffset)
-                    builder.Append('+');
-                else if (map[x, y] == 1)
-                    builder.Append('#');
-                else if (map[x, y] == 2)
-                    builder.Append('O');
-                else
-                    builder.Append('.');
-            }
-            builder.AppendLine();
-        }
-
-        Console.WriteLine(builder.ToString());
-    }
 }

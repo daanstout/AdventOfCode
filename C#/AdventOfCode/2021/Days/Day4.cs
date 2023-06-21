@@ -12,7 +12,7 @@ public class Day4 : AdventDay {
         public bool HasBingo => CalculateBingo();
 
         private readonly Digit[,] digits = new Digit[5, 5];
-        private readonly Dictionary<int, Digit> digitByNumber = new Dictionary<int, Digit>();
+        private readonly Dictionary<int, Digit> digitByNumber = new();
 
         public Board(string[] digits, int boardStartIndex) {
             for (int i = 0; i < 5; i++) {

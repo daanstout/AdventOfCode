@@ -83,7 +83,7 @@ public class Day8 : AdventDay {
 
                 int current = heightMap[x, y];
 
-                int offset = 0;
+                int offset;
                 bool broken = false;
 
                 for(offset = 1; offset <= x; offset++) {

@@ -71,7 +71,7 @@ public class Day11 : AdventDay {
         public bool ApplyWorry(Func<long, long> operation, bool reduceWorry, int diviser, int divisibleBy) {
             var worry = operation(Worry);
             if (reduceWorry) {
-                worry = worry / 3;
+                worry /= 3;
             } else {
                 worry %= diviser;
             }

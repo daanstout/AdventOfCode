@@ -15,7 +15,7 @@ public class Day8 : AdventDay {
         return sum;
     }
 
-    private int CalculateValue(string line) {
+    private static int CalculateValue(string line) {
         string[] parts = line.Split('|');
 
         string[] segments = parts[0].Split(' ', StringSplitOptions.RemoveEmptyEntries);

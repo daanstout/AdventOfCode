@@ -33,5 +33,5 @@ public class Day1 : AdventDay<int[]> {
         return result.Sum();
     }
 
-    private int CalculateFuelCost(int mass) => mass / 3 - 2;
+    private static int CalculateFuelCost(int mass) => mass / 3 - 2;
 }
