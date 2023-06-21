@@ -14,7 +14,7 @@ public class Day2 : AdventDay<IntCodeVM> {
 
         state = new IntCodeVM(memory);
 
-        return state.RunCopy(memory => {
+        return state.Run(memory => {
             memory[1] = 12;
             memory[2] = 2;
         });
@@ -25,7 +25,7 @@ public class Day2 : AdventDay<IntCodeVM> {
 
         for (int noun = 0; noun <= 99; noun++) {
             for(int verb = 0; verb <= 99; verb++) {
-                if (state.RunCopy(memory => {
+                if (state.Run(memory => {
                     memory[1] = noun;
                     memory[2] = verb;
                 }) == TARGET_VALUE) {

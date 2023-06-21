@@ -149,6 +149,7 @@ public abstract class AdventDay {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("DEBUG ENABLED");
         }
+        Console.ForegroundColor = ConsoleColor.White;
         SolvePart(SolvePart1, "Part One:", out var oneTicks);
         Console.WriteLine();
         SolvePart(SolvePart2, "Part Two:", out var twoTicks);

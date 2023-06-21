@@ -14,6 +14,13 @@ public static class IEnumerableExtensions {
     public static int[] ToIntArray(this IEnumerable<string> enumerable) => enumerable.ToArray(int.Parse);
 
     /// <summary>
+    /// Transforms a <see cref="char"/> <see cref="IEnumerable{T}"/> to an <see cref="int"/> <see cref="Array"/>.
+    /// </summary>
+    /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to parse.</param>
+    /// <returns>An <see cref="int"/> <see cref="Array"/> with values parsed from <paramref name="enumerable"/>,</returns>
+    public static int[] ToIntArray(this IEnumerable<char> enumerable) => enumerable.ToArray(c => c.ToInt32());
+
+    /// <summary>
     /// Transforms a <see cref="string"/> <see cref="IEnumerable{T}"/> to a <see cref="float"/> <see cref="Array"/>.
     /// </summary>
     /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to parse.</param>
@@ -28,6 +35,15 @@ public static class IEnumerableExtensions {
     /// <param name="parser">The parser to use when parsing.</param>
     /// <returns>An <see cref="Array"/> of type <typeparamref name="T"/> with the parsed values.</returns>
     public static T[] ToArray<T>(this IEnumerable<string> enumerable, Func<string, T> parser) => enumerable.Select(line => line.Parse(parser)).ToArray();
+    
+    /// <summary>
+    /// Transforms a <see cref="char"/> <see cref="IEnumerable{T}"/> to an <see cref="Array"/> of type <typeparamref name="T"/> using the provided <paramref name="parser"/>.
+    /// </summary>
+    /// <typeparam name="T">The type to conver to.</typeparam>
+    /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to parse.</param>
+    /// <param name="parser">The parser to use when parsing.</param>
+    /// <returns>An <see cref="Array"/> of type <typeparamref name="T"/> with the parsed values.</returns>
+    public static T[] ToArray<T>(this IEnumerable<char> enumerable, Func<char, T> parser) => enumerable.Select(c => parser(c)).ToArray();
 
     /// <summary>
     /// Transforms a <see cref="string"/> <see cref="IEnumerable{T}"/> to an <see cref="int"/> <see cref="List{T}"/>.

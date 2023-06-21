@@ -512,3 +512,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+session.txt

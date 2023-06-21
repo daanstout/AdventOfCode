@@ -13,9 +13,11 @@ public static class ArrayExtensions {
     /// <param name="array">The array to slice through.</param>
     /// <param name="row">The row to take out.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> with the values in the row that can be iterated over.</returns>
+    /// <exception cref="IndexOutOfRangeException">Thrown if <paramref name="row"/> is outside the array size.</exception>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="array"/> is <see langword="null"/>.</exception>
     public static IEnumerable<T> SliceRow<T>(this T[,] array, int row) {
         for (int i = 0; i < array.GetLength(0); i++) {
-            yield return array[i, row];
+            yield return array[row, i];
         }
     }
 
@@ -26,9 +28,11 @@ public static class ArrayExtensions {
     /// <param name="array">The array to slice through.</param>
     /// <param name="column">The column to take out.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> with the values in the column that can be iterated over.</returns>
+    /// <exception cref="IndexOutOfRangeException">Thrown if <paramref name="column"/> is outside the array size.</exception>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="array"/> is <see langword="null"/>.</exception>
     public static IEnumerable<T> SliceColumn<T>(this T[,] array, int column) {
         for (int i = 0; i < array.GetLength(1); i++) {
-            yield return array[column, i];
+            yield return array[i, column];
         }
     }
 
@@ -41,9 +45,14 @@ public static class ArrayExtensions {
     /// <param name="y">The y-position of the element to get the neighbours from.</param>
     /// <param name="includeDiagonal">Whether or not to include diagonal neigbours.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> with the valid neighbour coordinates of the requested position.</returns>
+    /// <exception cref="IndexOutOfRangeException">Thrown if <paramref name="x"/> or <paramref name="y"/> are outside the array size.</exception>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="source"/> is <see langword="null"/>.</exception>
     public static IEnumerable<(int x, int y)> GetNeighbourCoords<T>(this T[,] source, int x, int y, bool includeDiagonal = true) {
         int width = source.GetLength(0);
         int height = source.GetLength(1);
+
+        if (x < 0 || x >= width || y < 0 || y >= height)
+            throw new IndexOutOfRangeException();
 
         if (x > 0) {
             yield return (x - 1, y);
@@ -82,6 +91,8 @@ public static class ArrayExtensions {
     /// <param name="y">The y-position of the element to get the neighbours from.</param>
     /// <param name="includeDiagonal">Whether or not to include diagonal neighbours.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> with the neighbours of the requested position.</returns>
+    /// <exception cref="IndexOutOfRangeException">Thrown if <paramref name="x"/> or <paramref name="y"/> are outside the array size.</exception>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="array"/> is <see langword="null"/>.</exception>
     public static IEnumerable<T> GetNeighbours<T>(this T[,] source, int x, int y, bool includeDiagonal = true) {
         foreach (var coord in source.GetNeighbourCoords(x, y, includeDiagonal)) {
             yield return source[coord.x, coord.y];
@@ -95,6 +106,8 @@ public static class ArrayExtensions {
     /// <param name="source">The array to get the value from.</param>
     /// <param name="index">The index in both dimensions to get the value from.</param>
     /// <returns>The value stored at the specified index.</returns>
+    /// <exception cref="IndexOutOfRangeException">Thrown if <paramref name="index"/> is outside the array size.</exception>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="source"/> is <see langword="null"/>.</exception>
     public static T Get<T>(this T[,] source, (int, int) index) => source[index.Item1, index.Item2];
 
     /// <summary>
@@ -104,6 +117,7 @@ public static class ArrayExtensions {
     /// <param name="source">The array to count in.</param>
     /// <param name="predicate">The predicate to use to check if a value should be counted.</param>
     /// <returns>The total amount of values the <paramref name="predicate"/> returned true on.</returns>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
     public static int Count<T>(this T[,] source, Func<T, bool> predicate) {
         int count = 0;
         for (int i = 0; i < source.GetLength(0); i++) {
@@ -121,6 +135,7 @@ public static class ArrayExtensions {
     /// </summary>
     /// <param name="source">The array to sum.</param>
     /// <returns>The sum of all the values in the array.</returns>
+    /// <exception cref="NullReferenceException">Thrown if <paramref name="source"/> is <see langword="null"/>.</exception>
     public static T Sum<T>(this T[,] source) where T : INumber<T> {
         T count = default!;
         for (int i = 0; i < source.GetLength(0); i++) {
