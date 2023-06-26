@@ -12,7 +12,11 @@ public static class DictionaryExtensions {
     /// <param name="dictionary">The dictionary to obtain the value from.</param>
     /// <param name="key">The key to the value.</param>
     /// <returns>The value stored at the specified key, or the default value if it doesn't exist yet.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="dictionary"/> is <see langword="null"/></exception>
     public static TValue? GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) {
+        if (dictionary == null)
+            throw new ArgumentNullException(nameof(dictionary));
+
         if (!dictionary.TryGetValue(key, out var value)) {
             value = default;
             dictionary.Add(key, default!);

@@ -23,9 +23,9 @@ public class ArrayExtensionsTest {
     }
 
     [Test]
-    public void SliceRow_WhenCalledWithNullArray_ThrowsNullReferenceException() {
+    public void SliceRow_WhenCalledWithNullArray_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.SliceRow(5).GetEnumerator().MoveNext());
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.SliceRow(5).GetEnumerator().MoveNext());
     }
 
     [TestCase(0, new int[] { 0, 1, 2, 3, 4 })]
@@ -69,9 +69,9 @@ public class ArrayExtensionsTest {
     }
 
     [Test]
-    public void SliceColumn_WhenCalledWithNullArray_ThrowsNullReferenceException() {
+    public void SliceColumn_WhenCalledWithNullArray_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.SliceColumn(5).GetEnumerator().MoveNext());
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.SliceColumn(5).GetEnumerator().MoveNext());
     }
 
     [TestCase(0, new int[] { 0, 2, 4, 6, 8 })]
@@ -100,9 +100,9 @@ public class ArrayExtensionsTest {
 
     #region GetNeighbourCoords
     [Test]
-    public void GetNeighbourCoords_WhenCalledWithNullSource_ThrowsNullReferenceException() {
+    public void GetNeighbourCoords_WhenCalledWithNullSource_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.GetNeighbourCoords(5, 5).GetEnumerator().MoveNext());
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.GetNeighbourCoords(5, 5).GetEnumerator().MoveNext());
     }
 
     [Test]
@@ -142,9 +142,9 @@ public class ArrayExtensionsTest {
 
     #region GetNeighbours
     [Test]
-    public void GetNeighbours_WhenCalledWithNullSource_ThrowsNullReferenceException() {
+    public void GetNeighbours_WhenCalledWithNullSource_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.GetNeighbours(5, 5).GetEnumerator().MoveNext());
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.GetNeighbours(5, 5).GetEnumerator().MoveNext());
     }
 
     [Test]
@@ -184,9 +184,9 @@ public class ArrayExtensionsTest {
 
     #region Get
     [Test]
-    public void Get_WhenCalledWithNullSource_ThrowsNullReferenceException() {
+    public void Get_WhenCalledWithNullSource_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.Get((5, 5)));
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.Get((5, 5)));
     }
 
     [Test]
@@ -225,13 +225,13 @@ public class ArrayExtensionsTest {
 
     #region Count
     [Test]
-    public void Count_WhenCalledWithNullSource_ThrowsNullReferenceException() {
+    public void Count_WhenCalledWithNullSource_ThrowsArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.Count(val => true));
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.Count(val => true));
     }
 
     [Test]
-    public void Count_WhenCalledWithNullPredicate_ThrowsNullReferenceException() {
+    public void Count_WhenCalledWithNullPredicate_ThrowsArgumentNullException() {
         // Arrange
         var array = new int[5, 5] {
             { 0, 1, 2, 3, 4 },
@@ -242,7 +242,7 @@ public class ArrayExtensionsTest {
         };
 
         // Act - Assert
-        Assert.Throws<NullReferenceException>(() => array.Count(null!));
+        Assert.Throws<ArgumentNullException>(() => array.Count(null!));
     }
 
     [TestCaseSource(nameof(Count_TestCases))]
@@ -266,9 +266,9 @@ public class ArrayExtensionsTest {
 
     #region Sum
     [Test]
-    public void Sum_WhenCalledWithNullSource_ThrowNullReferenceException() {
+    public void Sum_WhenCalledWithNullSource_ThrowArgumentNullException() {
         // Arrange - Act - Assert
-        Assert.Throws<NullReferenceException>(() => (null as int[,])!.Sum());
+        Assert.Throws<ArgumentNullException>(() => (null as int[,])!.Sum());
     }
 
     [TestCaseSource(nameof(Sum_TestCases))]
